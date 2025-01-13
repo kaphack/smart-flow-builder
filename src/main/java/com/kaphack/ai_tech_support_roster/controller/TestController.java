@@ -21,14 +21,7 @@ public class TestController {
 
   @GetMapping("/chat")
   public String chat(@RequestParam("message") String message) {
-    ChatResponse response = chatModel.call(
-        new Prompt(
-            message,
-            OllamaOptions.builder()
-                .withModel(OllamaModel.LLAMA2)
-                .withTemperature(0.4)
-                .build()
-        ));
+    ChatResponse response = chatModel.call(new Prompt(message));
     return response.getResult().getOutput().getContent();
   }
 

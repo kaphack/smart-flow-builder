@@ -1,4 +1,4 @@
-package com.kaphack.ai_tech_support_roster.controller;
+package com.kaphack.smart_flow_builder.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.messages.UserMessage;

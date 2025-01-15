@@ -1,10 +1,7 @@
-package com.kaphack.ai_tech_support_roster.configuration;
+package com.kaphack.smart_flow_builder.configuration;
 
-import com.kaphack.ai_tech_support_roster.service.MockWeatherService;
+import com.kaphack.smart_flow_builder.service.MockWeatherService;
 import org.springframework.ai.model.function.FunctionCallback;
-import org.springframework.ai.ollama.OllamaChatModel;
-import org.springframework.ai.ollama.api.OllamaApi;
-import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.context.annotation.Bean;
 
 @org.springframework.context.annotation.Configuration

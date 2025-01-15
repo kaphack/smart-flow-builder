@@ -1,13 +1,13 @@
-package com.kaphack.ai_tech_support_roster;
+package com.kaphack.smart_flow_builder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AiTechSupportRosterApplication {
+public class SmartFlowBuilderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AiTechSupportRosterApplication.class, args);
+		SpringApplication.run(SmartFlowBuilderApplication.class, args);
 	}
 
 }

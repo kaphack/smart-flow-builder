@@ -1,10 +1,10 @@
-package com.kaphack.ai_tech_support_roster;
+package com.kaphack.smart_flow_builder;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AiTechSupportRosterApplicationTests {
+class SmartFlowBuilderApplicationTests {
 
 	@Test
 	void contextLoads() {

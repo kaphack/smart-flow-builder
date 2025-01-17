@@ -15,4 +15,5 @@ public class OllamaChatRequestDto {
   private boolean                    stream = false;
   private HashMap<?, ?>              format;
   private List<Object>               tools;
+  private String                     prompt;
 }

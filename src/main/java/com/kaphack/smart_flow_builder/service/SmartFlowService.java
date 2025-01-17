@@ -36,7 +36,8 @@ public class SmartFlowService {
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
     var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
-    Map<?, ?> modelOutputFormat = objectMapper.convertValue(outputConverter, Map.class);
+    String jsonSchema = outputConverter.getJsonSchema();
+    Object modelOutputFormat = objectMapper.convertValue(jsonSchema, Object.class);
     OllamaChatRequestDto ollamaChatRequestDto = OllamaChatRequestDto.builder()
         .model(GeneralConstants.MODEL_NAME)
         .format(modelOutputFormat)

@@ -3,6 +3,7 @@ package com.kaphack.smart_flow_builder.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaphack.smart_flow_builder.constant.GeneralConstants;
+import com.kaphack.smart_flow_builder.dto.OllamaChatMessageDto;
 import com.kaphack.smart_flow_builder.dto.OllamaChatRequestDto;
 import com.kaphack.smart_flow_builder.dto.OllamaChatResponseDto;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
@@ -16,10 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,15 +36,13 @@ public class SmartFlowService {
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
     var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
-//        OllamaChatResponseDto responseDto = new OllamaChatResponseDto();
-//        OllamaChatResponseDto.Message message = responseDto.new Message();
-//        message.setRole("user");
-//        message.setContent(reqDto.getPromptText());
-    List<OllamaChatRequestDto.Message> listOfMessages = new ArrayList<>();
-    HashMap modelOutputFormat = objectMapper.convertValue(reqDto, HashMap.class);
-    OllamaChatRequestDto ollamaChatRequestDto = OllamaChatRequestDto.builder().model(GeneralConstants.MODEL_NAME).format(modelOutputFormat).messages(listOfMessages) //
+    Map<?, ?> modelOutputFormat = objectMapper.convertValue(outputConverter, Map.class);
+    OllamaChatRequestDto ollamaChatRequestDto = OllamaChatRequestDto.builder()
+        .model(GeneralConstants.MODEL_NAME)
+        .format(modelOutputFormat)
         .tools(getFunctionDefinition())
         .build();
+    ollamaChatRequestDto.setMessages(List.of(new OllamaChatMessageDto("user", reqDto.getPromptText())));
     OllamaChatResponseDto ollamaChatResponseDto = modelService.ollamaChat(ollamaChatRequestDto);
     ModelOutputFormat responseFromLLM = objectMapper.readValue(ollamaChatResponseDto.getMessage().getContent(), ModelOutputFormat.class);
     return ResponseEntity.ok(responseFromLLM);

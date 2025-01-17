@@ -4,6 +4,7 @@ import com.kaphack.smart_flow_builder.constant.GeneralConstants;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Builder
@@ -12,6 +13,6 @@ public class OllamaChatRequestDto {
   private String                     model  = GeneralConstants.MODEL_NAME;
   private List<OllamaChatMessageDto> messages;
   private boolean                    stream = false;
-  private Object                     format;
+  private HashMap<?, ?>              format;
   private List<Object>               tools;
 }

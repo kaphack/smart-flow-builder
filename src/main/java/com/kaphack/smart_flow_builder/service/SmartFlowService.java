@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class SmartFlowService {
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
     var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
     String jsonSchema = outputConverter.getJsonSchema();
-    Object modelOutputFormat = objectMapper.convertValue(jsonSchema, Object.class);
+    HashMap<?, ?> modelOutputFormat = objectMapper.readValue(jsonSchema, HashMap.class);
     OllamaChatRequestDto ollamaChatRequestDto = OllamaChatRequestDto.builder()
         .model(GeneralConstants.MODEL_NAME)
         .format(modelOutputFormat)

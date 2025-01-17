@@ -30,7 +30,7 @@ public class SmartFlowController {
   // response: flowJson || replyQuestion
 
   @PostMapping
-  public ResponseEntity<SmartResponse> getSmartFlow(@Validated @RequestBody SmartFlowRequestDto reqDto) throws JsonProcessingException {
+  public ResponseEntity<?> getSmartFlow(@Validated @RequestBody SmartFlowRequestDto reqDto) throws JsonProcessingException {
     return smartFlowService.getSmartFlow(reqDto);
   }
 

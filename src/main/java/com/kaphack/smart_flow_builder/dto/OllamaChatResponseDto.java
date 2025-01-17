@@ -17,7 +17,7 @@ public class OllamaChatResponseDto {
   private Long    eval_duration;
 
   @Data
-  class Message {
+  public class Message {
     private String role;
     private String content;
   }

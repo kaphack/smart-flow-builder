@@ -39,19 +39,19 @@ public class SmartFlowService {
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
     var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
-        OllamaChatResponseDto responseDto = new OllamaChatResponseDto();
-        OllamaChatResponseDto.Message message = responseDto.new Message();
-        message.setRole("user");
-        message.setContent(reqDto.getPromptText());
-        List<OllamaChatRequestDto.Message> listOfMessages = new ArrayList<>();
-        HashMap modelOutputFormat = objectMapper.convertValue(reqDto, HashMap.class);
+//        OllamaChatResponseDto responseDto = new OllamaChatResponseDto();
+//        OllamaChatResponseDto.Message message = responseDto.new Message();
+//        message.setRole("user");
+//        message.setContent(reqDto.getPromptText());
+    List<OllamaChatRequestDto.Message> listOfMessages = new ArrayList<>();
+    HashMap modelOutputFormat = objectMapper.convertValue(reqDto, HashMap.class);
     OllamaChatRequestDto ollamaChatRequestDto = OllamaChatRequestDto.builder().model(GeneralConstants.MODEL_NAME).format(modelOutputFormat).messages(listOfMessages) //
         .tools(getFunctionDefinition())
         .build();
-        OllamaChatResponseDto ollamaChatResponseDto = modelService.ollamaChat(ollamaChatRequestDto);
-        ModelOutputFormat responseFromLLM = objectMapper.readValue(ollamaChatResponseDto.getMessage().getContent(), ModelOutputFormat.class);
-        return ResponseEntity.ok(responseFromLLM);
-    }
+    OllamaChatResponseDto ollamaChatResponseDto = modelService.ollamaChat(ollamaChatRequestDto);
+    ModelOutputFormat responseFromLLM = objectMapper.readValue(ollamaChatResponseDto.getMessage().getContent(), ModelOutputFormat.class);
+    return ResponseEntity.ok(responseFromLLM);
+  }
 
   private List<Object> getFunctionDefinition() {
     List<Object> functionDefinition = new ArrayList<>();

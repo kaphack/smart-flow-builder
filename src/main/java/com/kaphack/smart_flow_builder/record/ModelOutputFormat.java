@@ -1,6 +1,6 @@
 package com.kaphack.smart_flow_builder.record;
 
-public record ModelOutputDto(
+public record ModelOutputFormat(
     String status,
     FlowJson flowJson,
     String message

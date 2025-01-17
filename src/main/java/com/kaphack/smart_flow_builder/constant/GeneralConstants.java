@@ -1,6 +1,7 @@
 package com.kaphack.smart_flow_builder.constant;
 
 public class GeneralConstants {
+  public static final String MODEL_NAME    = "llama3.2";
   public static final String OUTPUT_SCHEMA = """
        {
            type: "object",

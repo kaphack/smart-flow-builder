@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record ModelOutputFormat(
     @JsonProperty(required = true) String status,
     @JsonProperty(required = true) FlowJson flowJson,
-    @JsonProperty(required = true) String message
+    @JsonProperty(required = true) String message,
+    String sessionId
 ) {
 }

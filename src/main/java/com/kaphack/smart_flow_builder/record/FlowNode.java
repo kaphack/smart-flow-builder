@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record FlowNode(
     @JsonProperty(required = true, value = "id") String id,
     @JsonProperty(required = true, value = "type") String type,
-    @JsonProperty(required = true, value = "data") Data data
+    @JsonProperty(required = true, value = "data") Data data,
+    @JsonProperty(required = true, value = "position") Position position
 ) {
 
   public record Data(
@@ -33,5 +34,11 @@ public record FlowNode(
         @JsonProperty(value = "transitionId") String transitionId
     ) {
     }
+  }
+
+  public record Position(
+      @JsonProperty(required = true) int x,
+      @JsonProperty(required = true) int y
+  ) {
   }
 }

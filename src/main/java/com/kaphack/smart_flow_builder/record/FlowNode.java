@@ -1,36 +1,37 @@
 package com.kaphack.smart_flow_builder.record;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record FlowNode(
-    String id,
-    String type,
-    Data data
+        @JsonProperty(required = true, value = "id") String id,
+        @JsonProperty(required = true, value = "type") String type,
+        @JsonProperty(required = true, value = "data") Data data
 ) {
 
-  record Data(
-      String body,
-      Transition transition,
-      Variables variables,
-      String message_type,
-      MessageList messageList
+  public record Data(
+          @JsonProperty(required = true, value = "body") String body,
+          @JsonProperty(required = true, value = "transition") Transition[] transition,
+          @JsonProperty(required = true, value = "variables") Variables variables,
+          @JsonProperty(value = "message_type") String message_type,
+          @JsonProperty(value = "messageList") MessageList[] messageList
   ) {
 
-    record Transition(
-        String id,
-        String label
+    public record Transition(
+            @JsonProperty(required = true, value = "id") String id,
+            @JsonProperty(required = true, value = "label") String label
     ) {
     }
 
-    record Variables(
-        String reply_message
+    public record Variables(
+            @JsonProperty(required = true, value = "reply_message") String reply_message
     ) {
     }
 
-    record MessageList(
-        String value,
-        String id,
-        String transitionId
+    public record MessageList(
+            @JsonProperty(required = true, value = "value") String value,
+            @JsonProperty(required = true, value = "id") String id,
+            @JsonProperty(value = "transitionId") String transitionId
     ) {
     }
-
   }
 }

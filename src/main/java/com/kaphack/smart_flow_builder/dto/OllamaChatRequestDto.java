@@ -11,10 +11,10 @@ public class OllamaChatRequestDto {
   private String model = GeneralConstants.MODEL_NAME;
   private List<Message> messages;
   private boolean stream = false;
-  private ModelOutputFormat format;
+  private Object format;
   private List<Object> tools;
 
-  class Message {
+  public class Message {
     private String role;
     private String content;
   }

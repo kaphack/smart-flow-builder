@@ -1,4 +1,6 @@
 package com.kaphack.smart_flow_builder.record;
 
-public record SmartResponse() {
+public record SmartResponse(
+    String flowJson
+) {
 }

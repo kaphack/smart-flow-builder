@@ -1,5 +1,6 @@
 package com.kaphack.smart_flow_builder.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.record.SmartResponse;
 import com.kaphack.smart_flow_builder.service.SmartFlowService;
@@ -29,7 +30,7 @@ public class SmartFlowController {
   // response: flowJson || replyQuestion
 
   @PostMapping
-  public ResponseEntity<SmartResponse> getSmartFlow(@Validated @RequestBody SmartFlowRequestDto reqDto) {
+  public ResponseEntity<SmartResponse> getSmartFlow(@Validated @RequestBody SmartFlowRequestDto reqDto) throws JsonProcessingException {
     return smartFlowService.getSmartFlow(reqDto);
   }
 

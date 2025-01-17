@@ -8,6 +8,7 @@ import com.kaphack.smart_flow_builder.dto.OllamaChatRequestDto;
 import com.kaphack.smart_flow_builder.dto.OllamaChatResponseDto;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
+import com.kaphack.smart_flow_builder.record.SmartResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.converter.BeanOutputConverter;
@@ -36,6 +37,7 @@ public class SmartFlowService {
   );
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
+    String sessionId = reqDto.getSessionId();
     var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
     String jsonSchema = outputConverter.getJsonSchema();
     HashMap<?, ?> modelOutputFormat = objectMapper.readValue(jsonSchema, HashMap.class);
@@ -48,7 +50,7 @@ public class SmartFlowService {
     ollamaChatRequestDto.setMessages(List.of(new OllamaChatMessageDto("user", reqDto.getPromptText())));
     OllamaChatResponseDto ollamaChatResponseDto = modelService.ollamaChat(ollamaChatRequestDto);
     ModelOutputFormat responseFromLLM = objectMapper.readValue(ollamaChatResponseDto.getMessage().getContent(), ModelOutputFormat.class);
-    return ResponseEntity.ok(responseFromLLM);
+    return ResponseEntity.ok(new SmartResponse(sessionId, responseFromLLM));
   }
 
   private List<Object> getFunctionDefinition() {

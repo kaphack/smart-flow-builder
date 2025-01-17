@@ -117,4 +117,27 @@ public class GeneralConstants {
            required: ["status", "flowJson", "message"]
        }
       """;
+
+  public static final String TEST_OUTPUT = """
+        {
+            "type": "object",
+            "properties": {
+                "steps": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "explanation": { "type": "string" },
+                            "output": { "type": "string" }
+                        },
+                        "required": ["explanation", "output"],
+                        "additionalProperties": false
+                    }
+                },
+                "final_answer": { "type": "string" }
+            },
+            "required": ["steps", "final_answer"],
+            "additionalProperties": false
+        }
+        """;
 }

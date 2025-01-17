@@ -22,9 +22,9 @@ public class SmartFlowService {
 
   public ResponseEntity<SmartResponse> getSmartFlow(SmartFlowRequestDto reqDto) {
     ChatOptions options = OllamaOptions.builder()
-        .withFormat(GeneralConstants.OUTPUT_SCHEMA)
+        .withFormat(GeneralConstants.TEST_OUTPUT)
         .build();
-    Prompt prompt = new Prompt(reqDto.getPromptText(), options);
+    Prompt prompt = new Prompt(reqDto.getPromptText());
     String output = chatModel.call(prompt).getResult().getOutput().getContent();
 
     return ResponseEntity.ok(

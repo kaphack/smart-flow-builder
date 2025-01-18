@@ -9,21 +9,19 @@ import com.kaphack.smart_flow_builder.dto.OllamaChatResponseDto;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.entity.Message;
 import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
-import com.kaphack.smart_flow_builder.record.SmartResponse;
 import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.ollama.OllamaChatModel;
+import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,11 +35,6 @@ public class SmartFlowService {
   private final ModelService    modelService;
   private final MessageService  messageService;
 
-
-
-  private static final List<Class<?>> functionBeanList = List.of(
-      MockWeatherService.class
-  );
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
     String sessionId = reqDto.getSessionId();
@@ -89,21 +82,13 @@ public class SmartFlowService {
     return ResponseEntity.ok(updatedResponseFromLLM);
   }
 
-  private List<Object> getFunctionDefinition() {
-    List<Object> functionDefinition = new ArrayList<>();
-    functionBeanList.forEach(
-        bean -> {
-          try {
-            var outputConverter = new BeanOutputConverter<>(bean);
-            Map<?, ?> map = objectMapper.readValue(outputConverter.getJsonSchema(), Map.class);
-            functionDefinition.add(map);
-          } catch (Exception e) {
-            log.error("Error in getFunctionDefinition() foreach");
-          }
-        }
-    );
-    return functionDefinition;
+  private List<OllamaApi.ChatRequest.Tool> getFunctionDefinition() {
+    return FunctionCallbackService.functionCallbackList.stream().map((functionCallback) -> {
+      OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(functionCallback.getName(), functionCallback.getDescription(), functionCallback.getInputTypeSchema());
+      return new OllamaApi.ChatRequest.Tool(function);
+    }).toList();
   }
+
 
 //  var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
 //    System.out.println(outputConverter.getJsonSchema());

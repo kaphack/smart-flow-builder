@@ -2,6 +2,7 @@ package com.kaphack.smart_flow_builder.record;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.kaphack.smart_flow_builder.enums.FlowStepType;
 
 public record FlowNode(
@@ -12,7 +13,9 @@ public record FlowNode(
 ) {
 
   public record Data(
-      @JsonProperty(required = true, value = "body") String body,
+      @JsonProperty(required = true, value = "body")
+      @JsonPropertyDescription("The message to be displayed to the user.")
+      String body,
       @JsonProperty(required = true, value = "transition") Transition[] transition,
       @JsonProperty(required = true, value = "variables") Variables variables,
       @JsonProperty(value = "message_type") String message_type,

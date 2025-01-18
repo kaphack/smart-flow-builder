@@ -54,7 +54,7 @@ public enum FlowStepType {
     }
   },
 
-  @JsonPropertyDescription("Use this widget to connect the user to a live agent when the bot cannot handle the flow or specific scenarios require human intervention.")
+  @JsonPropertyDescription("Use this widget to connect the user to a live agent.")
   CONNECT_TO_AGENT_WIDGET {
     @Override
     public String getLabel() {

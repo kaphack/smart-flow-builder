@@ -65,6 +65,13 @@ public class SmartFlowService {
     OllamaChatResponseDto ollamaChatResponseDto = modelService.ollamaChat(ollamaChatRequestDto);
     ModelOutputFormat responseFromLLM = objectMapper.readValue(ollamaChatResponseDto.getMessage().getContent(), ModelOutputFormat.class);
 
+
+    Message message1 = new Message();
+    message1.setSessionId(sessionId);
+    message1.setMessage(reqDto.getPromptText());
+    message1.setRole(Message.Role.user);
+    messageService.saveMessage(message1);
+
     Message message = new Message();
     message.setSessionId(sessionId);
     message.setMessage(objectMapper.writeValueAsString(responseFromLLM));

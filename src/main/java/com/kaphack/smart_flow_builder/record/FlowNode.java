@@ -23,7 +23,9 @@ public record FlowNode(
       @JsonProperty(value = "message_type", required = true)
       @JsonPropertyDescription("Applicable only for node type LIST_MESSAGE_WIDGET, for other types, it should be set to null.")
       MessageTypeEnum message_type,
-      @JsonProperty(value = "messageList") MessageList[] messageList
+      @JsonProperty(value = "messageList")
+      @JsonPropertyDescription("Applicable only for node type LIST_MESSAGE_WIDGET, for other types, it should be set to null.")
+      MessageList[] messageList
   ) {
 
     public record Transition(

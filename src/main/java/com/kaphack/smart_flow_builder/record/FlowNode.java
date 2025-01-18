@@ -15,7 +15,8 @@ public record FlowNode(
 
   public record Data(
       @JsonProperty(required = true, value = "body")
-      @JsonPropertyDescription("The message to be displayed to the user.")
+      @JsonPropertyDescription("This field contains the message that the bot should send to the user. It will be a text message")
+      @JsonFormat(shape = JsonFormat.Shape.STRING)
       String body,
       @JsonProperty(required = true, value = "transition")
       @JsonPropertyDescription("Represents the link or pathway between two nodes, defining the flow or interaction within the system.")

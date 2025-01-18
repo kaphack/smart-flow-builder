@@ -39,6 +39,11 @@ public class SmartFlowService {
     List<OllamaChatMessageDto> ollamaMessageList = new ArrayList<>(); // Mutable list
     if (StringUtils.isNullOrEmpty(sessionId)) {
       sessionId = UUID.randomUUID().toString();
+      Message _message = new Message();
+      _message.setSessionId(sessionId);
+      _message.setMessage("Well, what do you need built?");
+      _message.setRole(Message.Role.system);
+      messageService.saveMessage(_message);
     } else {
       List<Message> messagesBySessionId = messageService.getMessagesBySessionId(sessionId);
       if (messagesBySessionId != null && !messagesBySessionId.isEmpty()) { // Fix null check before empty
@@ -64,7 +69,6 @@ public class SmartFlowService {
 
     OllamaChatResponseDto ollamaChatResponseDto = modelService.ollamaChat(ollamaChatRequestDto);
     ModelOutputFormat responseFromLLM = objectMapper.readValue(ollamaChatResponseDto.getMessage().getContent(), ModelOutputFormat.class);
-
 
     Message message1 = new Message();
     message1.setSessionId(sessionId);

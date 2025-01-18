@@ -11,7 +11,7 @@ public enum FlowStepType {
 //      return "Fastlane Initiated";
 //    }
 //  },
-  @JsonPropertyDescription("Use this widget to send a plain text message to the customer as part of the flow. The message body should contain simple text (e.g., 'Welcome to our service!'). Ensure no additional JSON structure is included in the body. The description is it Allows you to define/send a text message during the conversation ")
+  @JsonPropertyDescription("Use this widget to send a text message.")
   SEND_MESSAGE_WIDGET {
     @Override
     public String getLabel() {

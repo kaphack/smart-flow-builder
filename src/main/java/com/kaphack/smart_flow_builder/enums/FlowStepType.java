@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 public enum FlowStepType {
-  @JsonProperty("CHAT_TRIGGER_WIDGET")
-  CHAT_TRIGGER_WIDGET {
-    @Override
-    public String getLabel() {
-      return "Fastlane Initiated";
-    }
-  },
+//  @JsonProperty("CHAT_TRIGGER_WIDGET")
+//  CHAT_TRIGGER_WIDGET {
+//    @Override
+//    public String getLabel() {
+//      return "Fastlane Initiated";
+//    }
+//  },
   @JsonPropertyDescription("Use this widget to send a plain text message to the customer as part of the flow. The message body should contain simple text (e.g., 'Welcome to our service!'). Ensure no additional JSON structure is included in the body. The description is it Allows you to define/send a text message during the conversation ")
   SEND_MESSAGE_WIDGET {
     @Override

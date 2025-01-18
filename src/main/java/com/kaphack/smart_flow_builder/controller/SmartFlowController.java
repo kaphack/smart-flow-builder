@@ -36,4 +36,8 @@ public class SmartFlowController {
     return smartFlowService.getSmartFlow(reqDto);
   }
 
+  @GetMapping("/messages")
+  public ResponseEntity<?> getMessagesForSessionId(@RequestParam(required = true) String sessionId ) {
+  return smartFlowService.getAllMessages(sessionId);
+  }
 }

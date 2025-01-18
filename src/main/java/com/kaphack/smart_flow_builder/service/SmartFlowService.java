@@ -40,6 +40,7 @@ public class SmartFlowService {
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
     String sessionId = reqDto.getSessionId();
     List<OllamaChatMessageDto> ollamaMessageList = new ArrayList<>();
+    List<Message> messagesBySessionId  = new ArrayList<>();
     if (StringUtils.isNullOrEmpty(sessionId)) {
       sessionId = UUID.randomUUID().toString();
       Message _message = new Message();
@@ -47,8 +48,9 @@ public class SmartFlowService {
       _message.setMessage("Well, what do you need built?");
       _message.setRole(Message.Role.system);
       messageService.saveMessage(_message);
+      messagesBySessionId.add(_message);
     } else {
-      List<Message> messagesBySessionId = messageService.getMessagesBySessionId(sessionId);
+      messagesBySessionId = messageService.getMessagesBySessionId(sessionId);
       if (messagesBySessionId != null && !messagesBySessionId.isEmpty()) {
         List<OllamaChatMessageDto> mappedMessages = messagesBySessionId.stream()
             .map(message -> new OllamaChatMessageDto(message.getRole().toString(), message.getMessage()))

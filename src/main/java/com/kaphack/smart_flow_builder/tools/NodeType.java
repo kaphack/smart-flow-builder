@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.kaphack.smart_flow_builder.service.MockWeatherService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Function;

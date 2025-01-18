@@ -1,6 +1,6 @@
 package com.kaphack.smart_flow_builder.configuration;
 
-import com.kaphack.smart_flow_builder.service.MockWeatherService;
+import com.kaphack.smart_flow_builder.service.function_callback.MockWeatherService;
 import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.context.annotation.Bean;
 

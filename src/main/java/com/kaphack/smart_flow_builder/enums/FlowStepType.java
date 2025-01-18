@@ -19,7 +19,7 @@ public enum FlowStepType {
     }
   },
 
-  @JsonPropertyDescription("Use this widget to send a message to the customer and wait for their reply. Once the customer responds, the flow will continue based on the received input.")
+  @JsonPropertyDescription("Use this widget to send a message to the customer and wait for their reply or asking for inputs.")
   SEND_WAIT_REPLY_MESSAGE_WIDGET {
     @Override
     public String getLabel() {

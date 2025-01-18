@@ -17,7 +17,9 @@ public record FlowNode(
       @JsonProperty(required = true, value = "body")
       @JsonPropertyDescription("The message to be displayed to the user.")
       String body,
-      @JsonProperty(required = true, value = "transition") Transition[] transition,
+      @JsonProperty(required = true, value = "transition")
+      @JsonPropertyDescription("Represents the link or pathway between two nodes, defining the flow or interaction within the system.")
+      Transition[] transition,
       @JsonPropertyDescription("The variable names that will have the values of the user's response for SEND_WAIT_REPLY_MESSAGE_WIDGET and results of other node types.")
       @JsonProperty(required = true, value = "variables") Variables variables,
       @JsonProperty(value = "message_type", required = true)

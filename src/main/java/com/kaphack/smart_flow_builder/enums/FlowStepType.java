@@ -46,7 +46,7 @@ public enum FlowStepType {
     }
   },
 
-  @JsonPropertyDescription("Use this widget to evaluate conditions such as if, else if, and else for creating complex conditional flows.")
+  @JsonPropertyDescription("Use this widget to evaluate conditions such as if, else if, and else for creating conditional flows.")
   LOGIC_WIDGET {
     @Override
     public String getLabel() {

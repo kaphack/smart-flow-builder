@@ -2,10 +2,11 @@ package com.kaphack.smart_flow_builder.record;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kaphack.smart_flow_builder.FlowStepType;
 
 public record FlowNode(
     @JsonProperty(required = true, value = "id") @JsonFormat(shape = JsonFormat.Shape.STRING) String id,
-    @JsonProperty(required = true, value = "type") String type,
+    @JsonProperty(required = true, value = "type") FlowStepType type,
     @JsonProperty(required = true, value = "data") Data data,
     @JsonProperty(required = true, value = "position") Position position
 ) {

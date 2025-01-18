@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "kaphack_smart_flow_messages")
+@Table(name = "smart_flow_conversation")
 @Data
 public class Message {
 
@@ -15,7 +15,7 @@ public class Message {
   @Column(name = "session_id", nullable = false)
   private String sessionId;
 
-  @Column(name = "message", nullable = false)
+  @Column(name = "message", nullable = false, columnDefinition = "TEXT")
   private String message;
 
   @Enumerated(EnumType.STRING)

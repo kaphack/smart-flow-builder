@@ -2,9 +2,9 @@
 FROM openjdk:21-jdk-slim
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
-    xargs \
-    && rm -rf /var/lib/apt/lists/* \
+#RUN apt-get update && apt-get install -y \
+#    xargs \
+#    && rm -rf /var/lib/apt/lists/* \
 
 # Set the working directory in the container
 WORKDIR /app

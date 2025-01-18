@@ -68,7 +68,7 @@ public class SmartFlowService {
     Message message = new Message();
     message.setSessionId(sessionId);
     message.setMessage(responseFromLLM.message());
-    message.setRole(Message.Role.USER);
+    message.setRole(Message.Role.ASSISTANT);
     messageService.saveMessage(message);
 
     ModelOutputFormat updatedResponseFromLLM = new ModelOutputFormat(

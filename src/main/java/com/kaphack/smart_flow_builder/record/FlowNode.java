@@ -10,14 +10,14 @@ public record FlowNode(
     @JsonProperty(required = true, value = "id") @JsonFormat(shape = JsonFormat.Shape.STRING) String id,
     @JsonProperty(required = true, value = "type")
     @JsonPropertyDescription("""
-        SEND_MESSAGE_WIDGET Use widget to send a text message.
-        SEND_WAIT_REPLY_MESSAGE_WIDGET Use this widget to send a message to the customer and wait for their reply or asking for inputs.
-        LIST_MESSAGE_WIDGET Use this widget to present the customer with a list of quick reply options. The customer can select one of the provided options to proceed with the flow.
-        API_REQUEST_WIDGET Use this widget to make an API call.
-        CUSTOM_ACTION_WIDGET Use this widget to execute custom JavaScript actions after api requests to extract required data.
-        LOGIC_WIDGET Use this widget to evaluate conditions such as if, else if, and else for creating conditional flows.
-        CONNECT_TO_AGENT_WIDGET Use this widget to connect the user to a live agent.
-        END_OF_FLOW_WIDGET Use this widget to mark the completion of the flow.
+        Use SEND_MESSAGE_WIDGET to send a text message.
+        Use SEND_WAIT_REPLY_MESSAGE_WIDGET to send a message to the customer and wait for their reply or asking for inputs.
+        Use LIST_MESSAGE_WIDGET to present the customer with a list of quick reply options. The customer can select one of the provided options to proceed with the flow.
+        Use API_REQUEST_WIDGET to make an API call.
+        Use CUSTOM_ACTION_WIDGET to execute custom JavaScript actions after api requests to extract required data.
+        Use LOGIC_WIDGET to evaluate conditions such as if, else if, and else for creating conditional flows.
+        Use CONNECT_TO_AGENT_WIDGET to connect the user to a live agent.
+        Use END_OF_FLOW_WIDGET to mark the completion of the flow.
         """)
     FlowStepType type,
     @JsonProperty(required = true, value = "data") Data data,

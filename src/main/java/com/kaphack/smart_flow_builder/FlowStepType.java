@@ -1,6 +1,9 @@
 package com.kaphack.smart_flow_builder;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum FlowStepType {
+  @JsonProperty("CHAT_TRIGGER_WIDGET")
   CHAT_TRIGGER_WIDGET {
     @Override
     public String getLabel() {

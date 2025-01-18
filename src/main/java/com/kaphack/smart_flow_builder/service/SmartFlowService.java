@@ -16,13 +16,11 @@ import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,6 +86,16 @@ public class SmartFlowService {
       return new OllamaApi.ChatRequest.Tool(function);
     }).toList();
   }
+
+  public ResponseEntity<Map<String, List<Message>>> getAllMessages(String sessionId) {
+    List<Message> messages = messageService.getMessagesBySessionId(sessionId);
+    if (messages == null || messages.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("messages", Collections.emptyList()));
+    }
+    Map<String, List<Message>> response = Map.of("messages", messages);
+    return ResponseEntity.ok(response);
+  }
+
 
 
 //  var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 @AllArgsConstructor(onConstructor_ = @__(@Autowired))
+@CrossOrigin(origins = "*")
 public class SmartFlowController {
 
   private final SmartFlowService smartFlowService;
@@ -34,4 +36,8 @@ public class SmartFlowController {
     return smartFlowService.getSmartFlow(reqDto);
   }
 
+  @GetMapping("/messages")
+  public ResponseEntity<?> getMessagesForSessionId(@RequestParam(required = true) String sessionId ) {
+  return smartFlowService.getAllMessages(sessionId);
+  }
 }

@@ -7,7 +7,9 @@ import com.kaphack.smart_flow_builder.enums.FlowStepType;
 import com.kaphack.smart_flow_builder.enums.MessageTypeEnum;
 
 public record FlowNode(
-    @JsonProperty(required = true, value = "id") @JsonFormat(shape = JsonFormat.Shape.STRING) String id,
+    @JsonProperty(required = true, value = "id") @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JsonPropertyDescription("Unique identifier for the node. UUID")
+    String id,
     @JsonProperty(required = true, value = "type")
     @JsonPropertyDescription("""
         Use SEND_MESSAGE_WIDGET to send a text message.

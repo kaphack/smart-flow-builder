@@ -72,7 +72,7 @@ public enum FlowStepType {
 //  EXTERNAL_FLOW_WIDGET,
 
 
-  @JsonPropertyDescription("Use this widget to mark the completion of the flow. This signifies the end of the bot's interaction with the user for the current session.")
+  @JsonPropertyDescription("Use this widget to mark the completion of the flow.")
   END_OF_FLOW_WIDGET {
     @Override
     public String getLabel() {

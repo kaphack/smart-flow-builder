@@ -12,6 +12,8 @@ import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
 import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor_ = @__(@Autowired))
 @Slf4j
 public class SmartFlowService {
+  private static final Logger logger = LoggerFactory.getLogger(SmartFlowService.class);
 
   private final OllamaChatModel chatModel;
   private final ObjectMapper    objectMapper;
@@ -36,7 +39,7 @@ public class SmartFlowService {
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
     String sessionId = reqDto.getSessionId();
-    List<OllamaChatMessageDto> ollamaMessageList = new ArrayList<>(); // Mutable list
+    List<OllamaChatMessageDto> ollamaMessageList = new ArrayList<>();
     if (StringUtils.isNullOrEmpty(sessionId)) {
       sessionId = UUID.randomUUID().toString();
       Message _message = new Message();
@@ -46,7 +49,7 @@ public class SmartFlowService {
       messageService.saveMessage(_message);
     } else {
       List<Message> messagesBySessionId = messageService.getMessagesBySessionId(sessionId);
-      if (messagesBySessionId != null && !messagesBySessionId.isEmpty()) { // Fix null check before empty
+      if (messagesBySessionId != null && !messagesBySessionId.isEmpty()) {
         List<OllamaChatMessageDto> mappedMessages = messagesBySessionId.stream()
             .map(message -> new OllamaChatMessageDto(message.getRole().toString(), message.getMessage()))
             .collect(Collectors.toList());

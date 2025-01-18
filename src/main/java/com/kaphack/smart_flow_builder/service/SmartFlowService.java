@@ -88,7 +88,7 @@ public class SmartFlowService {
     ModelOutputFormat updatedResponseFromLLM = new ModelOutputFormat(
         responseFromLLM.status(),
         responseFromLLM.flowJson(),
-        responseFromLLM.message(),
+        responseFromLLM.reply(),
         sessionId
     );
     return ResponseEntity.ok(updatedResponseFromLLM);

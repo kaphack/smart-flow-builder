@@ -11,7 +11,7 @@ public record ModelOutputFormat(
     // Add a description that if status is need details then it should aks for details else give proper json
     @JsonProperty(required = true)
     @JsonPropertyDescription("If status is NEED_DETAILS, this field contains a prompt asking for additional details. If status is PROCESSED, this field contains a statement tells what's done.")
-    String message,
+    String reply,
     String sessionId
 ) {
 }

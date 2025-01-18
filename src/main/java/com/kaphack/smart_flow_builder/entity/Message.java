@@ -24,6 +24,7 @@ public class Message {
 
 
   public enum Role {
-    SYSTEM, USER, ASSISTANT
+    system, user, assistant
   }
+
 }

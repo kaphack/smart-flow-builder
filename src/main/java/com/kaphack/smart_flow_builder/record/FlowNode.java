@@ -2,7 +2,7 @@ package com.kaphack.smart_flow_builder.record;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kaphack.smart_flow_builder.FlowStepType;
+import com.kaphack.smart_flow_builder.enums.FlowStepType;
 
 public record FlowNode(
     @JsonProperty(required = true, value = "id") @JsonFormat(shape = JsonFormat.Shape.STRING) String id,

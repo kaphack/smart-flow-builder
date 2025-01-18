@@ -38,7 +38,7 @@ public enum FlowStepType {
     }
   },
 
-  @JsonPropertyDescription("Use this widget to execute custom JavaScript actions after api requests or other logic conditions.")
+  @JsonPropertyDescription("Use this widget to execute custom JavaScript actions after api requests to extract required data.")
   CUSTOM_ACTION_WIDGET {
     @Override
     public String getLabel() {

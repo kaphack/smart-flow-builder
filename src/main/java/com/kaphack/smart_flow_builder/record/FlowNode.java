@@ -1,11 +1,13 @@
 package com.kaphack.smart_flow_builder.record;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.kaphack.smart_flow_builder.enums.FlowStepType;
 import com.kaphack.smart_flow_builder.enums.MessageTypeEnum;
 
+@JsonClassDescription("FlowNode represents a node in the flow. each node is the config for a step in the flow.")
 public record FlowNode(
     @JsonProperty(required = true, value = "id") @JsonFormat(shape = JsonFormat.Shape.STRING)
     @JsonPropertyDescription("Unique identifier for the node. UUID")

@@ -30,7 +30,7 @@ public enum FlowStepType {
 
   @JsonPropertyDescription("Use this widget to present the customer with a list of quick reply options. The customer can select one of the provided options to proceed with the flow.")
   LIST_MESSAGE_WIDGET,
-  @JsonPropertyDescription("Use this widget to make an API call during interaction with the customer. The response from the API will be processed and shown to the customer in real-time.")
+  @JsonPropertyDescription("Use this widget to make an API call.")
   API_REQUEST_WIDGET {
     @Override
     public String getLabel() {

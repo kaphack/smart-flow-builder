@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "messages")
+@Table(name = "kaphack_smart_flow_messages")
 @Data
 public class Message {
 

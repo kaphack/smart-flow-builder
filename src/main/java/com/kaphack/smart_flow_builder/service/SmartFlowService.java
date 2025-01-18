@@ -65,7 +65,7 @@ public class SmartFlowService {
     OllamaChatRequestDto ollamaChatRequestDto = OllamaChatRequestDto.builder()
         .model(GeneralConstants.MODEL_NAME)
         .format(modelOutputFormat)
-        .tools(getFunctionDefinition())
+//        .tools(getFunctionDefinition())
         .prompt(reqDto.getPromptText())
         .build();
     ollamaChatRequestDto.setMessages(ollamaMessageList);

@@ -3,12 +3,10 @@ package com.kaphack.smart_flow_builder.service;
 import com.kaphack.smart_flow_builder.constant.GeneralConstants;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.entity.Message;
-import com.kaphack.smart_flow_builder.repository.MessageRepository;
 import com.kaphack.smart_flow_builder.util.StaticContextAccessor;
 import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +21,7 @@ import java.util.Map;
 @Slf4j
 public class SmartFlowService implements ISmartFlowService {
 
-  private final ModelService modelService;
   private final MessageService messageService;
-  private final MessageRepository messageRepository;
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) {
     try {
@@ -41,12 +37,12 @@ public class SmartFlowService implements ISmartFlowService {
     }
   }
 
-  private List<OllamaApi.ChatRequest.Tool> getFunctionDefinition() {
-    return FunctionCallbackService.functionCallbackList.stream().map((functionCallback) -> {
-      OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(functionCallback.getName(), functionCallback.getDescription(), functionCallback.getInputTypeSchema());
-      return new OllamaApi.ChatRequest.Tool(function);
-    }).toList();
-  }
+//  private List<OllamaApi.ChatRequest.Tool> getFunctionDefinition() {
+//    return FunctionCallbackService.functionCallbackList.stream().map((functionCallback) -> {
+//      OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(functionCallback.getName(), functionCallback.getDescription(), functionCallback.getInputTypeSchema());
+//      return new OllamaApi.ChatRequest.Tool(function);
+//    }).toList();
+//  }
 
   public ResponseEntity<Map<String, List<Message>>> getAllMessages(String sessionId) {
     List<Message> messages = messageService.getMessagesBySessionId(sessionId);

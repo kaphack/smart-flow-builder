@@ -10,15 +10,15 @@ import com.kaphack.smart_flow_builder.enums.MessageTypeEnum;
 @JsonClassDescription("FlowNode represents a node in the flow. each node is the config for a step in the flow.")
 public record FlowNode(
     @JsonProperty(required = true, value = "id") @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @JsonPropertyDescription("Unique identifier for the node. UUID")
+    @JsonPropertyDescription("Unique identifier for the node. Generate using function UUID.randomUUID().toString()")
     String id,
     @JsonProperty(required = true, value = "type")
     @JsonPropertyDescription("""
         Use SEND_MESSAGE_WIDGET to send a text message.
-        Use SEND_WAIT_REPLY_MESSAGE_WIDGET to send a message to the customer and wait for their reply or asking for inputs.
+        Use SEND_WAIT_REPLY_MESSAGE_WIDGET to send a message and wait for their reply or asking for inputs.
         Use LIST_MESSAGE_WIDGET to present the customer with a list of quick reply options. The customer can select one of the provided options to proceed with the flow.
         Use API_REQUEST_WIDGET to make an API call.
-        Use CUSTOM_ACTION_WIDGET to execute custom JavaScript actions after api requests to extract required data.
+        Use CUSTOM_ACTION_WIDGET to define custom JavaScript function after api requests to extract required data.
         Use LOGIC_WIDGET to evaluate conditions such as if, else if, and else for creating conditional flows.
         Use CONNECT_TO_AGENT_WIDGET to connect the user to a live agent.
         Use END_OF_FLOW_WIDGET to mark the completion of the flow.
@@ -28,6 +28,7 @@ public record FlowNode(
     @JsonProperty(required = true, value = "position") Position position
 ) {
 
+  @JsonClassDescription("Data represents the data for the node.")
   public record Data(
       @JsonProperty(required = true)
       @JsonPropertyDescription("Text message")
@@ -47,21 +48,31 @@ public record FlowNode(
       String javaScriptFunction
   ) {
 
+    @JsonClassDescription("Transition represents the link or pathway between two nodes, defining the flow or interaction within the system.")
     public record Transition(
+        @JsonPropertyDescription("Unique identifier for the transition. Generate using function UUID.randomUUID().toString()")
         String id,
+        @JsonPropertyDescription("Label of the transition, this is the text that will be displayed on the transition.")
         String label
     ) {
     }
 
     public record Variables(
-        @JsonProperty(required = true, value = "reply_message") String reply_message
+        @JsonProperty(required = true, value = "reply_message")
+        @JsonPropertyDescription("The variable name that will have the value of the user's response.")
+        String reply_message
     ) {
     }
 
+    @JsonClassDescription("MessageList represents the list of messages for the LIST_MESSAGE_WIDGET.")
     public record MessageList(
+        @JsonPropertyDescription("Quick reply option text.")
         String value,
+        @JsonPropertyDescription("Unique identifier for the transition. Generate using function UUID.randomUUID().toString()")
         String id,
-        @JsonProperty(value = "transitionId") String transitionId
+        @JsonProperty(value = "transitionId")
+        @JsonPropertyDescription("ID of the transition that will be triggered when the user selects this option.")
+        String transitionId
     ) {
     }
   }

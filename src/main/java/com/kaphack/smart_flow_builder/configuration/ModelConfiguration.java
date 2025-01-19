@@ -18,14 +18,14 @@ public class ModelConfiguration {
 //            .temperature(0.9));
 //  }
 
-  @Bean
-  public FunctionCallback weatherFunctionInfo() {
-    return FunctionCallback.builder()
-        .description("Get the weather in location") // (2) function description
-        .function("CurrentWeather", new MockWeatherService()) // (1) function name
-        .inputType(MockWeatherService.Request.class) // (3) function signature
-        .build();
-  }
+//  @Bean
+//  public FunctionCallback weatherFunctionInfo() {
+//    return FunctionCallback.builder()
+//        .description("Get the weather in location") // (2) function description
+//        .function("CurrentWeather", new MockWeatherService()) // (1) function name
+//        .inputType(MockWeatherService.Request.class) // (3) function signature
+//        .build();
+//  }
 
 }
 

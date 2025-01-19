@@ -4,6 +4,7 @@ import com.kaphack.smart_flow_builder.constant.GeneralConstants;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.ai.ollama.api.OllamaApi;
+import org.springframework.ai.ollama.api.OllamaOptions;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,5 +17,5 @@ public class OllamaChatRequestDto {
   private boolean                          stream = false;
   private HashMap<?, ?>                    format;
   private List<OllamaApi.ChatRequest.Tool> tools;
-  private String                           prompt;
+  private OllamaOptions                    options;
 }

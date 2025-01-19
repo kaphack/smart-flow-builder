@@ -14,9 +14,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
+import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,60 +37,25 @@ public class SmartFlowService {
   private static final Logger logger = LoggerFactory.getLogger(SmartFlowService.class);
 
   private final OllamaChatModel chatModel;
-  private final ObjectMapper    objectMapper;
-  private final ModelService    modelService;
-  private final MessageService  messageService;
+  private final ObjectMapper objectMapper;
+  private final ModelService modelService;
+  private final MessageService messageService;
 
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
     String sessionId = reqDto.getSessionId();
-    List<OllamaChatMessageDto> ollamaMessageList = new ArrayList<>();
-    List<Message> messagesBySessionId  = new ArrayList<>();
-    if (StringUtils.isNullOrEmpty(sessionId)) {
-      sessionId = UUID.randomUUID().toString();
-      Message _message = new Message();
-      _message.setSessionId(sessionId);
-      _message.setMessage("Well, what do you need built?");
-      _message.setRole(Message.Role.system);
-      messageService.saveMessage(_message);
-      messagesBySessionId.add(_message);
-    } else {
-      messagesBySessionId = messageService.getMessagesBySessionId(sessionId);
-      if (messagesBySessionId != null && !messagesBySessionId.isEmpty()) {
-        List<OllamaChatMessageDto> mappedMessages = messagesBySessionId.stream()
-            .map(message -> new OllamaChatMessageDto(message.getRole().toString(), message.getMessage()))
-            .collect(Collectors.toList());
-        ollamaMessageList.addAll(mappedMessages);
-      }
-    }
-
-    ollamaMessageList.add(new OllamaChatMessageDto("user", reqDto.getPromptText()));
-
-    var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
-    String jsonSchema = outputConverter.getJsonSchema();
-    HashMap<?, ?> modelOutputFormat = objectMapper.readValue(jsonSchema, HashMap.class);
-    OllamaChatRequestDto ollamaChatRequestDto = OllamaChatRequestDto.builder()
-        .model(GeneralConstants.MODEL_NAME)
-        .format(modelOutputFormat)
-//        .tools(getFunctionDefinition())
-        .prompt(reqDto.getPromptText())
+    List<org.springframework.ai.chat.messages.Message> ollamaMessageList = new ArrayList<>();
+    ollamaMessageList.add(new SystemMessage("Well, what do you need built?"));
+    ollamaMessageList.add(new UserMessage(reqDto.getPromptText()));
+    BeanOutputConverter beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
+//    new PromptTemplate(beanOutputConverter.getFormat(), beanOutputConverter.getJsonSchema()).;
+    OllamaOptions options = OllamaOptions.builder()
+        .temperature(1.0)
+        .format(beanOutputConverter.getJsonSchemaMap())
         .build();
-    ollamaChatRequestDto.setMessages(ollamaMessageList);
-
-    OllamaChatResponseDto ollamaChatResponseDto = modelService.ollamaChat(ollamaChatRequestDto);
-    ModelOutputFormat responseFromLLM = objectMapper.readValue(ollamaChatResponseDto.getMessage().getContent(), ModelOutputFormat.class);
-
-    Message message1 = new Message();
-    message1.setSessionId(sessionId);
-    message1.setMessage(reqDto.getPromptText());
-    message1.setRole(Message.Role.user);
-    messageService.saveMessage(message1);
-
-    Message message = new Message();
-    message.setSessionId(sessionId);
-    message.setMessage(objectMapper.writeValueAsString(responseFromLLM));
-    message.setRole(Message.Role.assistant);
-    messageService.saveMessage(message);
+    Prompt prompt = new Prompt(ollamaMessageList, options);
+    String output = chatModel.call(prompt).getResult().getOutput().getContent();
+    ModelOutputFormat responseFromLLM = objectMapper.readValue(output, ModelOutputFormat.class);
 
     ModelOutputFormat updatedResponseFromLLM = new ModelOutputFormat(
         responseFromLLM.status(),
@@ -113,6 +83,52 @@ public class SmartFlowService {
   }
 
 
+//      List<Message> messagesBySessionId = new ArrayList<>();
+//    if (StringUtils.isNullOrEmpty(sessionId)) {
+//      sessionId = UUID.randomUUID().toString();
+//      Message _message = new Message();
+//      _message.setSessionId(sessionId);
+//      _message.setMessage("Well, what do you need built?");
+//      _message.setRole(Message.Role.system);
+//      messageService.saveMessage(_message);
+//      messagesBySessionId.add(_message);
+//    } else {
+//      messagesBySessionId = messageService.getMessagesBySessionId(sessionId);
+//      if (messagesBySessionId != null && !messagesBySessionId.isEmpty()) {
+//        List<OllamaChatMessageDto> mappedMessages = messagesBySessionId.stream()
+//            .map(message -> new OllamaChatMessageDto(message.getRole().toString(), message.getMessage()))
+//            .collect(Collectors.toList());
+//        ollamaMessageList.addAll(mappedMessages);
+//      }
+//    }
+//
+//    ollamaMessageList.add(new OllamaChatMessageDto("user", reqDto.getPromptText()));
+//
+//    var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
+//    String jsonSchema = outputConverter.getJsonSchema();
+//    HashMap<?, ?> modelOutputFormat = objectMapper.readValue(jsonSchema, HashMap.class);
+//    OllamaChatRequestDto ollamaChatRequestDto = OllamaChatRequestDto.builder()
+//        .model(GeneralConstants.MODEL_NAME)
+//        .format(modelOutputFormat)
+////        .tools(getFunctionDefinition())
+//        .options(OllamaOptions.builder().withTemperature(1.0).build())
+//        .build();
+//    ollamaChatRequestDto.setMessages(ollamaMessageList);
+//
+//    OllamaChatResponseDto ollamaChatResponseDto = modelService.ollamaChat(ollamaChatRequestDto);
+//    ModelOutputFormat responseFromLLM = objectMapper.readValue(ollamaChatResponseDto.getMessage().getContent(), ModelOutputFormat.class);
+//
+//    Message message1 = new Message();
+//    message1.setSessionId(sessionId);
+//    message1.setMessage(reqDto.getPromptText());
+//    message1.setRole(Message.Role.user);
+//    messageService.saveMessage(message1);
+//
+//    Message message = new Message();
+//    message.setSessionId(sessionId);
+//    message.setMessage(objectMapper.writeValueAsString(responseFromLLM));
+//    message.setRole(Message.Role.assistant);
+//    messageService.saveMessage(message);
 
 //  var outputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
 //    System.out.println(outputConverter.getJsonSchema());

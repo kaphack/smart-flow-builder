@@ -36,7 +36,7 @@ public record FlowNode(
       @JsonPropertyDescription("Text message")
       String body,
       @JsonProperty(required = true, value = "transition")
-      @JsonPropertyDescription("Represents the link or pathway between two nodes, defining the flow or interaction within the system.")
+      @JsonPropertyDescription("Represents the link or pathway between two nodes, defining the flow or interaction within the system. LIST_MESSAGE_WIDGET and LOGIC_WIDGET can have more than one transition, all other node types should have only one transition.")
       List<Transition> transition,
       @JsonPropertyDescription("The variable names that will have the values of the user's response for SEND_WAIT_REPLY_MESSAGE_WIDGET and results of other node types.")
       @JsonProperty(required = true, value = "variables")

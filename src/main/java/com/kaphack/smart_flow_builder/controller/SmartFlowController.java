@@ -3,6 +3,7 @@ package com.kaphack.smart_flow_builder.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.record.SmartResponse;
+import com.kaphack.smart_flow_builder.service.OpenAIChatService;
 import com.kaphack.smart_flow_builder.service.SmartFlowService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SmartFlowController {
 
   private final SmartFlowService smartFlowService;
+  private final OpenAIChatService openAIChatService;
 
   // todo:
   // voice prompt, chat based prompt, select steps and send particular prompt, image prompt
@@ -40,4 +42,10 @@ public class SmartFlowController {
   public ResponseEntity<?> getMessagesForSessionId(@RequestParam(required = true) String sessionId ) {
   return smartFlowService.getAllMessages(sessionId);
   }
+
+  @PostMapping("/openai")
+  public ResponseEntity<?> getOpenAiSmartFlow(@Validated @RequestBody SmartFlowRequestDto reqDto) throws JsonProcessingException {
+    return openAIChatService.getSmartFlow(reqDto);
+  }
+
 }

@@ -5,6 +5,7 @@ import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
 import com.kaphack.smart_flow_builder.record.SmartResponse;
 import com.kaphack.smart_flow_builder.repository.MessageRepository;
+import com.kaphack.smart_flow_builder.util.MediaInputUtils;
 import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.ai.chat.messages.Message;
@@ -22,7 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +35,7 @@ public class OllamaFlowService implements ISmartFlowService {
   private final ObjectMapper objectMapper;
   private final MessageRepository messageRepository;
   private final MessageService messageService;
+  private final MediaInputUtils mediaInputUtils;
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws Exception {
     List<Message> messageList = new ArrayList<>();
@@ -53,12 +54,13 @@ public class OllamaFlowService implements ISmartFlowService {
     }
     if (StringUtils.isNotNullOrEmpty(reqDto.getPromptImage())) {
       var useMessage = new UserMessage("Describe the flow mentioned in the image",
-          new Media(MimeTypeUtils.IMAGE_PNG, new URL(reqDto.getPromptImage())));
+          new Media(MimeTypeUtils.IMAGE_PNG, mediaInputUtils.getResourceFromImageUrl(reqDto.getPromptImage())));
       messageList.add(useMessage);
       Prompt visionPrompt = new Prompt(useMessage, OllamaOptions.builder()
           .temperature(1.0)
           .model(OllamaModel.LLAVA).build());
-      useMessage = new UserMessage(chatModel.call(visionPrompt).getResult().getOutput().getContent());
+      String visionOutput = chatModel.call(visionPrompt).getResult().getOutput().getContent();
+      useMessage = new UserMessage(reqDto.getPromptText() + "\n" + visionOutput);
       messageList.add(useMessage);
     } else {
       var useMessage = new UserMessage(reqDto.getPromptText());

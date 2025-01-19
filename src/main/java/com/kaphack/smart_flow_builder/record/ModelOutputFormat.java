@@ -2,7 +2,6 @@ package com.kaphack.smart_flow_builder.record;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.kaphack.smart_flow_builder.enums.Status;
 
 public record ModelOutputFormat(
 
@@ -17,4 +16,9 @@ public record ModelOutputFormat(
     String neededDetails
 
 ) {
+
+  enum Status {
+    NEED_DETAILS,
+    PROCESSED,
+  }
 }

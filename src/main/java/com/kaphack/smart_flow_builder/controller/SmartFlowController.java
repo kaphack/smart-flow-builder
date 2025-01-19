@@ -3,8 +3,6 @@ package com.kaphack.smart_flow_builder.controller;
 import com.kaphack.smart_flow_builder.constant.GeneralConstants;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.entity.Message;
-import com.kaphack.smart_flow_builder.service.OllamaFlowService;
-import com.kaphack.smart_flow_builder.service.OpenAIFlowService;
 import com.kaphack.smart_flow_builder.service.SmartFlowService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class SmartFlowController {
 
   private final SmartFlowService smartFlowService;
-  private final OllamaFlowService ollamaFlowService;
-  private final OpenAIFlowService openAIFlowService;
 
   // todo:
   // voice prompt, chat based prompt, select steps and send particular prompt, image prompt

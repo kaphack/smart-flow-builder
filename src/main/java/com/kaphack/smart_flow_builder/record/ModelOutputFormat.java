@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 public record ModelOutputFormat(
 
     @JsonProperty(required = true)
+    @JsonPropertyDescription("status of the output, if user prompt is not clear or any additional information required status will be NEED_DETAILS else PROCESSED")
     Status status,
 
     @JsonProperty(required = true)

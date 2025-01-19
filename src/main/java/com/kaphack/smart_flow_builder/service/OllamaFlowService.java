@@ -54,6 +54,7 @@ public class OllamaFlowService implements ISmartFlowService {
         .temperature(1.0)
         .model(reqDto.getModel())
         .format(beanOutputConverter.getJsonSchemaMap())
+        .functionCallbacks(FunctionCallbackService.functionCallbackList)
         .build();
     Prompt prompt = new Prompt(messageList, options);
     String output = chatModel.call(prompt).getResult().getOutput().getContent();

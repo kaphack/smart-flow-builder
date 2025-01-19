@@ -56,6 +56,7 @@ public class OpenAIFlowService implements ISmartFlowService {
         .temperature(1.0)
         .model(OpenAiApi.ChatModel.GPT_4_O_MINI)
         .responseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, beanOutputConverter.getJsonSchema()))
+        .functionCallbacks(FunctionCallbackService.functionCallbackList)
         .build();
     Prompt prompt = new Prompt(messageList, options);
     String output = chatModel.call(prompt).getResult().getOutput().getContent();

@@ -17,8 +17,6 @@ import java.util.HashMap;
 @Slf4j
 public class ModelService {
 
-  @Autowired
-  private RestTemplate restTemplate;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -30,7 +28,7 @@ public class ModelService {
     try {
       String url = ollamaBaseUrl + "/api/chat";
       HttpEntity<?> httpEntity = new HttpEntity<>(objectMapper.convertValue(ollamaRequestDto, HashMap.class));
-      return restTemplate.exchange(url, HttpMethod.POST, httpEntity, OllamaChatResponseDto.class)
+      return new RestTemplate().exchange(url, HttpMethod.POST, httpEntity, OllamaChatResponseDto.class)
           .getBody();
     } catch (Exception e) {
       log.error("Error in ollamaChat()", e);

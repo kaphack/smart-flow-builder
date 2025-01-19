@@ -53,14 +53,14 @@ public class OllamaFlowService implements ISmartFlowService {
       messageList = messageService.getPastConversation(sessionId);
     }
     if (StringUtils.isNotNullOrEmpty(reqDto.getPromptImage())) {
-      var useMessage = new UserMessage("Describe the flow mentioned in the image",
-          new Media(MimeTypeUtils.IMAGE_PNG, mediaInputUtils.getResourceFromImageUrl(reqDto.getPromptImage())));
-      messageList.add(useMessage);
-      Prompt visionPrompt = new Prompt(useMessage, OllamaOptions.builder()
-          .temperature(1.0)
-          .model(OllamaModel.LLAVA).build());
-      String visionOutput = chatModel.call(visionPrompt).getResult().getOutput().getContent();
-      useMessage = new UserMessage(reqDto.getPromptText() + "\n" + visionOutput);
+      var media = new Media(MimeTypeUtils.IMAGE_PNG, mediaInputUtils.getResourceFromImageUrl(reqDto.getPromptImage()));
+      var useMessage = new UserMessage("Describe the flow mentioned in the image", media);
+//      messageList.add(useMessage);
+//      Prompt visionPrompt = new Prompt(useMessage, OllamaOptions.builder()
+//          .temperature(1.0)
+//          .model(OllamaModel.LLAVA).build());
+//      String visionOutput = chatModel.call(visionPrompt).getResult().getOutput().getContent();
+//      useMessage = new UserMessage(reqDto.getPromptText() + "\n" + visionOutput);
       messageList.add(useMessage);
     } else {
       var useMessage = new UserMessage(reqDto.getPromptText());

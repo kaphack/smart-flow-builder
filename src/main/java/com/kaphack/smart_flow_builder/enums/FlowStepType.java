@@ -38,7 +38,7 @@ public enum FlowStepType {
     }
   },
 
-  @JsonPropertyDescription("Use this widget to execute custom JavaScript actions after api requests to extract required data.")
+  @JsonPropertyDescription("Use this widget to write and run custom JavaScript functions wherever required. The function result will be stored in variable and used in further flow. Mostly will be used after api requests to extract required data.")
   CUSTOM_ACTION_WIDGET {
     @Override
     public String getLabel() {

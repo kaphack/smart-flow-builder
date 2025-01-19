@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.kaphack.smart_flow_builder.enums.FlowStepType;
 import com.kaphack.smart_flow_builder.enums.MessageTypeEnum;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public record FlowNode(
         Use SEND_WAIT_REPLY_MESSAGE_WIDGET to send a message and wait for their reply or asking for inputs.
         Use LIST_MESSAGE_WIDGET to present the customer with a list of quick reply options. The customer can select one of the provided options to proceed with the flow.
         Use API_REQUEST_WIDGET to make an API call.
-        Use CUSTOM_ACTION_WIDGET to define custom JavaScript function after api requests to extract required data.
+        Use CUSTOM_ACTION_WIDGET to write and run custom JavaScript functions when required. The function result will be stored in variable and used in further flow. Mostly will be used after api requests to extract required data.
         Use LOGIC_WIDGET to evaluate conditions such as if, else if, and else for creating conditional flows.
         Use CONNECT_TO_AGENT_WIDGET to connect the user to a live agent.
         Use END_OF_FLOW_WIDGET to mark the completion of the flow.
@@ -30,7 +31,7 @@ public record FlowNode(
     @JsonProperty(required = true, value = "position") Position position
 ) {
 
-  @JsonClassDescription("Data represents the data for the node.")
+  @JsonClassDescription("Data represents the data for the node. Format to use variables in the property values {{variable_name}}")
   public record Data(
       @JsonProperty(required = true)
       @JsonPropertyDescription("Text message. If variables needs to used in message use like {{variable_name}}")
@@ -48,8 +49,36 @@ public record FlowNode(
       @JsonPropertyDescription("Applicable only for node type LIST_MESSAGE_WIDGET, for other types, it should be set to null.")
       List<MessageList> messageList,
       @JsonProperty(required = true)
-      @JsonPropertyDescription("JavaScript function code. Applicable only for node type CUSTOM_ACTION_WIDGET, for other types, it should be set to null.")
-      String javaScriptFunction
+      @JsonPropertyDescription("""
+           JavaScript function code. Applicable only for node type CUSTOM_ACTION_WIDGET, for other types, it should be set to null. below is boilerplate code for the function
+               function customFunction(bucket) {
+                 bucket = JSON.parse(bucket);
+                 // Your code here
+                 // bucket is object which contains all the variable and value in the flow
+                 // Global variables: bucket.TICKET_ID, bucket.CONTACT.contactPerson, bucket.CUSTOMER.id
+               }
+          """)
+      String javaScriptFunction,
+
+      @JsonProperty(required = true)
+      @JsonPropertyDescription("API request method, Applicable only for node type API_REQUEST_WIDGET, for other types, it should be set to null.")
+      RequestMethod requestMethod,
+
+      @JsonProperty(required = true)
+      @JsonPropertyDescription("API url, Applicable only for node type API_REQUEST_WIDGET, for other types, it should be set to null.")
+      String url,
+
+      @JsonProperty(required = true)
+      @JsonPropertyDescription("API query param json, Applicable only for node type API_REQUEST_WIDGET, for other types, it should be set to null.")
+      String query_param_json,
+
+      @JsonProperty(required = true)
+      @JsonPropertyDescription("API request headers json, Applicable only for node type API_REQUEST_WIDGET, for other types, it should be set to null.")
+      String header_json,
+
+      @JsonProperty(required = true)
+      @JsonPropertyDescription("API request body json, Applicable only for node type API_REQUEST_WIDGET, for other types, it should be set to null.")
+      String body_json
   ) {
 
     @JsonClassDescription("Transition represents the link or pathway between two nodes, defining the flow or interaction within the system.")

@@ -55,7 +55,9 @@ public class OllamaFlowService implements ISmartFlowService {
       var useMessage = new UserMessage("Describe the flow mentioned in the image",
           new Media(MimeTypeUtils.IMAGE_PNG, new URL(reqDto.getPromptImage())));
       messageList.add(useMessage);
-      Prompt visionPrompt = new Prompt(useMessage, OllamaOptions.builder().model(OllamaModel.LLAVA).build());
+      Prompt visionPrompt = new Prompt(useMessage, OllamaOptions.builder()
+          .temperature(1.0)
+          .model(OllamaModel.LLAVA).build());
       useMessage = new UserMessage(chatModel.call(visionPrompt).getResult().getOutput().getContent());
       messageList.add(useMessage);
     } else {

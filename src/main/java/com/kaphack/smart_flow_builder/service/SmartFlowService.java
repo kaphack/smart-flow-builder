@@ -7,6 +7,7 @@ import com.kaphack.smart_flow_builder.util.StaticContextAccessor;
 import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.messages.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor_ = @__(@Autowired))
@@ -51,6 +53,22 @@ public class SmartFlowService implements ISmartFlowService {
     }
     Map<String, List<Message>> response = Map.of("messages", messages);
     return ResponseEntity.ok(response);
+  }
+
+  public ResponseEntity<?> saveMessage(Message message) {
+    if (StringUtils.isNullOrEmpty(message.getMessage()) || message.getRole() == null) {
+      return ResponseEntity.badRequest().body("Required fields are missing");
+    }
+    if (StringUtils.isNullOrEmpty(message.getSessionId())) {
+      String sessionId = UUID.randomUUID().toString();
+      messageService.saveMessage(Message.builder()
+          .sessionId(sessionId)
+          .message("Well, what do you need built?")
+          .role(MessageType.SYSTEM)
+          .build());
+      message.setSessionId(sessionId);
+    }
+    return ResponseEntity.ok(messageService.saveMessage(message));
   }
 
 

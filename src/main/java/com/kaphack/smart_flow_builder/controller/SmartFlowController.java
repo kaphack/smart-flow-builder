@@ -2,6 +2,7 @@ package com.kaphack.smart_flow_builder.controller;
 
 import com.kaphack.smart_flow_builder.constant.GeneralConstants;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
+import com.kaphack.smart_flow_builder.entity.Message;
 import com.kaphack.smart_flow_builder.service.OllamaFlowService;
 import com.kaphack.smart_flow_builder.service.OpenAIFlowService;
 import com.kaphack.smart_flow_builder.service.SmartFlowService;
@@ -37,6 +38,11 @@ public class SmartFlowController {
   @GetMapping("/messages")
   public ResponseEntity<?> getMessagesForSessionId(@RequestParam(required = true) String sessionId) {
     return smartFlowService.getAllMessages(sessionId);
+  }
+
+  @PostMapping("/messages/save")
+  public ResponseEntity<?> saveMessageForSessionId(@RequestBody Message message) {
+    return smartFlowService.saveMessage(message);
   }
 
   @GetMapping("/models")

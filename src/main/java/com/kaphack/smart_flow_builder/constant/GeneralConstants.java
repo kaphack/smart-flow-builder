@@ -1,7 +1,23 @@
 package com.kaphack.smart_flow_builder.constant;
 
+import com.kaphack.smart_flow_builder.service.ISmartFlowService;
+import com.kaphack.smart_flow_builder.service.OllamaFlowServiceI;
+import com.kaphack.smart_flow_builder.service.OpenAIFlowService;
+import org.springframework.ai.ollama.api.OllamaModel;
+import org.springframework.ai.openai.api.OpenAiApi;
+
+import java.util.Map;
+
 public class GeneralConstants {
-  public static final String MODEL_NAME    = "llama3.2";
+
+  public static final Map<String, Class<? extends ISmartFlowService>> AVAILABLE_MODELS = Map.of(
+      OpenAiApi.ChatModel.GPT_4_O_MINI.getName(), OpenAIFlowService.class,
+      OllamaModel.LLAMA3_2.getName(), OllamaFlowServiceI.class,
+      OllamaModel.MISTRAL.getName(), OllamaFlowServiceI.class
+  );
+
+  public static final String MODEL_NAME = "llama3.2";
+
   public static final String OUTPUT_SCHEMA = """
        {
            type: "object",
@@ -120,25 +136,25 @@ public class GeneralConstants {
       """;
 
   public static final String TEST_OUTPUT = """
-        {
-            "type": "object",
-            "properties": {
-                "steps": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "explanation": { "type": "string" },
-                            "output": { "type": "string" }
-                        },
-                        "required": ["explanation", "output"],
-                        "additionalProperties": false
-                    }
-                },
-                "final_answer": { "type": "string" }
-            },
-            "required": ["steps", "final_answer"],
-            "additionalProperties": false
-        }
-        """;
+      {
+          "type": "object",
+          "properties": {
+              "steps": {
+                  "type": "array",
+                  "items": {
+                      "type": "object",
+                      "properties": {
+                          "explanation": { "type": "string" },
+                          "output": { "type": "string" }
+                      },
+                      "required": ["explanation", "output"],
+                      "additionalProperties": false
+                  }
+              },
+              "final_answer": { "type": "string" }
+          },
+          "required": ["steps", "final_answer"],
+          "additionalProperties": false
+      }
+      """;
 }

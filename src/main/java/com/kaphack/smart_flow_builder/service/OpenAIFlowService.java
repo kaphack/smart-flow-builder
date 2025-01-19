@@ -23,7 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
-public class OpenAIChatService {
+public class OpenAIFlowService implements ISmartFlowService {
 
   private final OpenAiChatModel chatModel;
   private final ObjectMapper objectMapper;

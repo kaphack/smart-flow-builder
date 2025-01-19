@@ -1,70 +1,39 @@
 package com.kaphack.smart_flow_builder.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaphack.smart_flow_builder.constant.GeneralConstants;
-import com.kaphack.smart_flow_builder.dto.OllamaChatMessageDto;
-import com.kaphack.smart_flow_builder.dto.OllamaChatRequestDto;
-import com.kaphack.smart_flow_builder.dto.OllamaChatResponseDto;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.entity.Message;
-import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
-import com.kaphack.smart_flow_builder.util.StringUtils;
+import com.kaphack.smart_flow_builder.util.StaticContextAccessor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.messages.SystemMessage;
-import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.converter.BeanOutputConverter;
-import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
-import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor(onConstructor_ = @__(@Autowired))
 @Slf4j
-public class SmartFlowService {
-  private static final Logger logger = LoggerFactory.getLogger(SmartFlowService.class);
+public class SmartFlowService implements ISmartFlowService {
 
-  private final OllamaChatModel chatModel;
-  private final ObjectMapper objectMapper;
   private final ModelService modelService;
   private final MessageService messageService;
 
-
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
-    String sessionId = reqDto.getSessionId();
-    List<org.springframework.ai.chat.messages.Message> ollamaMessageList = new ArrayList<>();
-    ollamaMessageList.add(new SystemMessage("Well, what do you need built?"));
-    ollamaMessageList.add(new UserMessage(reqDto.getPromptText()));
-    BeanOutputConverter beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
-//    new PromptTemplate(beanOutputConverter.getFormat(), beanOutputConverter.getJsonSchema()).;
-    OllamaOptions options = OllamaOptions.builder()
-        .temperature(1.0)
-        .format(beanOutputConverter.getJsonSchemaMap())
-        .build();
-    Prompt prompt = new Prompt(ollamaMessageList, options);
-    String output = chatModel.call(prompt).getResult().getOutput().getContent();
-    ModelOutputFormat responseFromLLM = objectMapper.readValue(output, ModelOutputFormat.class);
-
-    ModelOutputFormat updatedResponseFromLLM = new ModelOutputFormat(
-        responseFromLLM.status(),
-        responseFromLLM.flowJson(),
-//        responseFromLLM.reply(),
-        sessionId
-    );
-    return ResponseEntity.ok(updatedResponseFromLLM);
+    var service = GeneralConstants.AVAILABLE_MODELS.get(reqDto.getModel());
+    if (service == null) {
+      return ResponseEntity.badRequest().body("Model not found");
+    }
+    return StaticContextAccessor.getBean(service)
+        .getSmartFlow(reqDto);
   }
+
 
   private List<OllamaApi.ChatRequest.Tool> getFunctionDefinition() {
     return FunctionCallbackService.functionCallbackList.stream().map((functionCallback) -> {

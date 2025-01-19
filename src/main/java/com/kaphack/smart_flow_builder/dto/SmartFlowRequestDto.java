@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class SmartFlowRequestDto {
+  private String model;
   private String sessionId;
   @NotNull
   private String promptText;

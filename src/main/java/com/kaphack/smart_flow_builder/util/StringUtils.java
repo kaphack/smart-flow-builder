@@ -9,4 +9,8 @@ public class StringUtils {
     return input == null || input.isEmpty() || "null".equals(input);
   }
 
+  public static boolean isNotNullOrEmpty(String input) {
+    return !isNullOrEmpty(input);
+  }
+
 }

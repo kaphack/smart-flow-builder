@@ -14,6 +14,7 @@ import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.converter.BeanOutputConverter;
+import org.springframework.ai.model.Media;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
@@ -21,7 +22,9 @@ import org.springframework.ai.openai.api.ResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeTypeUtils;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +38,7 @@ public class OpenAIFlowService implements ISmartFlowService {
   private final MessageRepository messageRepository;
   private final MessageService messageService;
 
-  public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
+  public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws Exception {
     List<Message> messageList = new ArrayList<>();
     String sessionId = reqDto.getSessionId();
     if (StringUtils.isNullOrEmpty(sessionId)) {
@@ -50,7 +53,14 @@ public class OpenAIFlowService implements ISmartFlowService {
     } else {
       messageList = messageService.getPastConversation(sessionId);
     }
-    messageList.add(new UserMessage(reqDto.getPromptText()));
+    if (StringUtils.isNotNullOrEmpty(reqDto.getPromptImage())) {
+      var useMessage = new UserMessage(reqDto.getPromptText(),
+          new Media(MimeTypeUtils.IMAGE_PNG, new URL(reqDto.getPromptImage())));
+      messageList.add(useMessage);
+    } else {
+      var useMessage = new UserMessage(reqDto.getPromptText());
+      messageList.add(useMessage);
+    }
     var beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
     OpenAiChatOptions options = OpenAiChatOptions.builder()
         .temperature(1.0)

@@ -33,7 +33,7 @@ public record FlowNode(
   @JsonClassDescription("Data represents the data for the node.")
   public record Data(
       @JsonProperty(required = true)
-      @JsonPropertyDescription("Text message")
+      @JsonPropertyDescription("Text message. If variables needs to used in message use like {{variable_name}}")
       String body,
       @JsonProperty(required = true, value = "transition")
       @JsonPropertyDescription("Represents the link or pathway between two nodes, defining the flow or interaction within the system. LIST_MESSAGE_WIDGET and LOGIC_WIDGET can have more than one transition, all other node types should have only one transition.")
@@ -55,7 +55,7 @@ public record FlowNode(
     @JsonClassDescription("Transition represents the link or pathway between two nodes, defining the flow or interaction within the system.")
     public record Transition(
         @JsonProperty(required = true)
-        @JsonPropertyDescription("Unique identifier for the transition. Generate using function UUID.randomUUID().toString()")
+        @JsonPropertyDescription("Unique identifier for the transition. Use function GenerateUUID")
         String id,
         @JsonProperty(required = true)
         @JsonPropertyDescription("Label of the transition, this is the text that will be displayed on the transition.")
@@ -76,7 +76,7 @@ public record FlowNode(
         @JsonPropertyDescription("Quick reply option text.")
         String value,
         @JsonProperty(required = true)
-        @JsonPropertyDescription("Unique identifier for the transition. Generate using function UUID.randomUUID().toString()")
+        @JsonPropertyDescription("Unique identifier for the transition. Use function GenerateUUID")
         String id,
         @JsonProperty(required = true)
         @JsonPropertyDescription("ID of the transition that will be triggered when the user selects this option.")

@@ -19,7 +19,6 @@ public record FlowEdge(
     @JsonProperty(required = true)
     @JsonPropertyDescription("ID of the target node of the edge.")
     String target,
-    @JsonProperty(defaultValue = "CUSTOM_EDGE", required = true) @JsonPropertyDescription("CUSTOM_EDGE") String type,
-    @JsonProperty(defaultValue = "true", required = true) Boolean animated
+    @JsonProperty(defaultValue = "CUSTOM_EDGE", required = true) @JsonPropertyDescription("value will be CUSTOM_EDGE always") String type
 ) {
 }

@@ -53,6 +53,15 @@ public class OpenAIFlowService implements ISmartFlowService {
     } else {
       messageList = messageService.getPastConversation(sessionId);
     }
+    messageRepository.save(
+        com.kaphack.smart_flow_builder.entity.Message.builder()
+            .sessionId(sessionId)
+            .message(reqDto.getPromptText())
+            .role(MessageType.USER)
+            .build()
+    );
+
+    reqDto.setPromptText(reqDto.getPromptText() + "\n\n" + reqDto.getInputFlowJson());
     if (StringUtils.isNotNullOrEmpty(reqDto.getPromptImage())) {
       var useMessage = new UserMessage(reqDto.getPromptText(),
           new Media(MimeTypeUtils.IMAGE_PNG, new URL(reqDto.getPromptImage())));
@@ -70,13 +79,7 @@ public class OpenAIFlowService implements ISmartFlowService {
         .build();
     Prompt prompt = new Prompt(messageList, options);
     String output = chatModel.call(prompt).getResult().getOutput().getContent();
-    messageRepository.save(
-        com.kaphack.smart_flow_builder.entity.Message.builder()
-            .sessionId(sessionId)
-            .message(reqDto.getPromptText())
-            .role(MessageType.USER)
-            .build()
-    );
+
     com.kaphack.smart_flow_builder.entity.Message assistantMessage = com.kaphack.smart_flow_builder.entity.Message.builder()
         .sessionId(sessionId)
         .message(output)

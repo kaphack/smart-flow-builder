@@ -66,6 +66,15 @@ public class OllamaFlowService implements ISmartFlowService {
       var useMessage = new UserMessage(reqDto.getPromptText());
       messageList.add(useMessage);
     }
+    messageRepository.save(
+        com.kaphack.smart_flow_builder.entity.Message.builder()
+            .sessionId(sessionId)
+            .message(reqDto.getPromptText())
+            .role(MessageType.USER)
+            .build()
+    );
+
+    reqDto.setPromptText(reqDto.getPromptText() + "\n\n" + reqDto.getInputFlowJson());
     var beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
     OllamaOptions options = OllamaOptions.builder()
         .temperature(1.0)
@@ -75,13 +84,7 @@ public class OllamaFlowService implements ISmartFlowService {
         .build();
     Prompt prompt = new Prompt(messageList, options);
     String output = chatModel.call(prompt).getResult().getOutput().getContent();
-    messageRepository.save(
-        com.kaphack.smart_flow_builder.entity.Message.builder()
-            .sessionId(sessionId)
-            .message(reqDto.getPromptText())
-            .role(MessageType.USER)
-            .build()
-    );
+
     com.kaphack.smart_flow_builder.entity.Message assistantMessage = com.kaphack.smart_flow_builder.entity.Message.builder()
         .sessionId(sessionId)
         .message(output)

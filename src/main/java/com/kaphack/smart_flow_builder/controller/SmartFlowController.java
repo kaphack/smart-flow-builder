@@ -1,9 +1,8 @@
 package com.kaphack.smart_flow_builder.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kaphack.smart_flow_builder.constant.GeneralConstants;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
-import com.kaphack.smart_flow_builder.service.OllamaFlowServiceI;
+import com.kaphack.smart_flow_builder.service.OllamaFlowService;
 import com.kaphack.smart_flow_builder.service.OpenAIFlowService;
 import com.kaphack.smart_flow_builder.service.SmartFlowService;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SmartFlowController {
 
   private final SmartFlowService smartFlowService;
-  private final OllamaFlowServiceI ollamaFlowService;
+  private final OllamaFlowService ollamaFlowService;
   private final OpenAIFlowService openAIFlowService;
 
   // todo:
@@ -46,7 +45,7 @@ public class SmartFlowController {
   }
 
   @PostMapping
-  public ResponseEntity<?> getSmartFlow(@Validated @RequestBody SmartFlowRequestDto reqDto) throws JsonProcessingException {
+  public ResponseEntity<?> getSmartFlow(@Validated @RequestBody SmartFlowRequestDto reqDto) {
     return smartFlowService.getSmartFlow(reqDto);
   }
 

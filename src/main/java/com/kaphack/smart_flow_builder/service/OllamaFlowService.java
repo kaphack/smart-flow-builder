@@ -7,17 +7,15 @@ import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
 import com.kaphack.smart_flow_builder.record.SmartResponse;
 import com.kaphack.smart_flow_builder.repository.MessageRepository;
 import com.kaphack.smart_flow_builder.util.StringUtils;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.converter.BeanOutputConverter;
-import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.ai.openai.api.OpenAiApi;
-import org.springframework.ai.openai.api.ResponseFormat;
+import org.springframework.ai.ollama.OllamaChatModel;
+import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,10 +25,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
-public class OpenAIFlowService implements ISmartFlowService {
+@AllArgsConstructor(onConstructor_ = @__(@Autowired))
+public class OllamaFlowService implements ISmartFlowService {
 
-  private final OpenAiChatModel chatModel;
+  private final OllamaChatModel chatModel;
   private final ObjectMapper objectMapper;
   private final MessageRepository messageRepository;
   private final MessageService messageService;
@@ -52,10 +50,10 @@ public class OpenAIFlowService implements ISmartFlowService {
     }
     messageList.add(new UserMessage(reqDto.getPromptText()));
     var beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
-    OpenAiChatOptions options = OpenAiChatOptions.builder()
+    OllamaOptions options = OllamaOptions.builder()
         .temperature(1.0)
-        .model(OpenAiApi.ChatModel.GPT_4_O_MINI)
-        .responseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, beanOutputConverter.getJsonSchema()))
+        .model(reqDto.getModel())
+        .format(beanOutputConverter.getJsonSchemaMap())
         .build();
     Prompt prompt = new Prompt(messageList, options);
     String output = chatModel.call(prompt).getResult().getOutput().getContent();

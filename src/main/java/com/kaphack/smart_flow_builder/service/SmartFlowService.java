@@ -1,9 +1,9 @@
 package com.kaphack.smart_flow_builder.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kaphack.smart_flow_builder.constant.GeneralConstants;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.entity.Message;
+import com.kaphack.smart_flow_builder.repository.MessageRepository;
 import com.kaphack.smart_flow_builder.util.StaticContextAccessor;
 import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.AllArgsConstructor;
@@ -25,16 +25,21 @@ public class SmartFlowService implements ISmartFlowService {
 
   private final ModelService modelService;
   private final MessageService messageService;
+  private final MessageRepository messageRepository;
 
-  public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
-    var service = StringUtils.isNullOrEmpty(reqDto.getModel()) ? OpenAIFlowService.class : GeneralConstants.AVAILABLE_MODELS.get(reqDto.getModel());
-    if (service == null) {
-      return ResponseEntity.badRequest().body("Model not found");
+  public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) {
+    try {
+      var service = StringUtils.isNullOrEmpty(reqDto.getModel()) ? OpenAIFlowService.class : GeneralConstants.AVAILABLE_MODELS.get(reqDto.getModel());
+      if (service == null) {
+        return ResponseEntity.badRequest().body("Model not found");
+      }
+      return StaticContextAccessor.getBean(service)
+          .getSmartFlow(reqDto);
+    } catch (Exception e) {
+      log.error("Error in getSmartFlow", e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
-    return StaticContextAccessor.getBean(service)
-        .getSmartFlow(reqDto);
   }
-
 
   private List<OllamaApi.ChatRequest.Tool> getFunctionDefinition() {
     return FunctionCallbackService.functionCallbackList.stream().map((functionCallback) -> {

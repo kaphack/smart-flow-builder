@@ -1,11 +1,18 @@
 package com.kaphack.smart_flow_builder.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.ai.chat.messages.MessageType;
 
 @Entity
 @Table(name = "smart_flow_conversation")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Message {
 
   @Id
@@ -20,11 +27,6 @@ public class Message {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "role", nullable = false)
-  private Role role;
-
-
-  public enum Role {
-    system, user, assistant
-  }
+  private MessageType role;
 
 }

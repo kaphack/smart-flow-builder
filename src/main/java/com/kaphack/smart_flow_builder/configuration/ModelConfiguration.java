@@ -1,7 +1,5 @@
 package com.kaphack.smart_flow_builder.configuration;
 
-import com.kaphack.smart_flow_builder.entity.Message;
-import com.kaphack.smart_flow_builder.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
@@ -14,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 public class ModelConfiguration {
 
-  private final MessageRepository messageRepository;
+//  private final MessageRepository messageRepository;
 
 //  @Bean
 //  public OllamaChatModel chatModel() {
@@ -38,8 +36,9 @@ public class ModelConfiguration {
 
   @Bean
   public OpenAiChatModel openAiChatModel() {
-    Message message = messageRepository.findById(1L).orElseThrow();
-    String string = message.getSessionId();
+//    Message message = messageRepository.findById(1L).orElseThrow();
+    String string = "";
+//    String string = message.getSessionId();
     var openAiApi = new OpenAiApi(string);
     var openAiChatOptions = OpenAiChatOptions.builder()
         .model(OpenAiApi.ChatModel.GPT_4_TURBO)

@@ -1,7 +1,7 @@
 package com.kaphack.smart_flow_builder.constant;
 
 import com.kaphack.smart_flow_builder.service.ISmartFlowService;
-import com.kaphack.smart_flow_builder.service.OllamaFlowServiceI;
+import com.kaphack.smart_flow_builder.service.OllamaFlowService;
 import com.kaphack.smart_flow_builder.service.OpenAIFlowService;
 import org.springframework.ai.ollama.api.OllamaModel;
 import org.springframework.ai.openai.api.OpenAiApi;
@@ -12,8 +12,8 @@ public class GeneralConstants {
 
   public static final Map<String, Class<? extends ISmartFlowService>> AVAILABLE_MODELS = Map.of(
       OpenAiApi.ChatModel.GPT_4_O_MINI.getName(), OpenAIFlowService.class,
-      OllamaModel.LLAMA3_2.getName(), OllamaFlowServiceI.class,
-      OllamaModel.MISTRAL.getName(), OllamaFlowServiceI.class
+      OllamaModel.LLAMA3_2.getName(), OllamaFlowService.class,
+      OllamaModel.MISTRAL.getName(), OllamaFlowService.class
   );
 
   public static final String MODEL_NAME = "llama3.2";

@@ -5,6 +5,7 @@ import com.kaphack.smart_flow_builder.constant.GeneralConstants;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.entity.Message;
 import com.kaphack.smart_flow_builder.util.StaticContextAccessor;
+import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.ollama.api.OllamaApi;
@@ -26,7 +27,7 @@ public class SmartFlowService implements ISmartFlowService {
   private final MessageService messageService;
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws JsonProcessingException {
-    var service = GeneralConstants.AVAILABLE_MODELS.get(reqDto.getModel());
+    var service = StringUtils.isNullOrEmpty(reqDto.getModel()) ? OpenAIFlowService.class : GeneralConstants.AVAILABLE_MODELS.get(reqDto.getModel());
     if (service == null) {
       return ResponseEntity.badRequest().body("Model not found");
     }

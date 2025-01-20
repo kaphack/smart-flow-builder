@@ -29,7 +29,7 @@ public record FlowNode(
     FlowStepType type,
     @JsonProperty(required = true, value = "data") Data data,
     @JsonProperty(required = true, value = "position")
-    @JsonPropertyDescription("Position of the node in the flow editor. Define position vertically giving enough space between previous and next nodes.")
+    @JsonPropertyDescription("Position of the node in the flow editor. Define position vertically giving extra space between previous and next nodes.")
     Position position
 ) {
 

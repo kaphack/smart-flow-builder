@@ -26,6 +26,7 @@ public class SmartFlowService implements ISmartFlowService {
   private final MessageService messageService;
 
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) {
+    log.info("Request received for getSmartFlow: {}", reqDto);
     try {
       var service = StringUtils.isNullOrEmpty(reqDto.getModel()) ? OpenAIFlowService.class : GeneralConstants.AVAILABLE_MODELS.get(reqDto.getModel());
       if (service == null) {

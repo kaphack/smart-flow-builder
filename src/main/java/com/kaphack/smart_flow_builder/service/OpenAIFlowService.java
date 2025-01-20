@@ -1,6 +1,5 @@
 package com.kaphack.smart_flow_builder.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
@@ -8,6 +7,7 @@ import com.kaphack.smart_flow_builder.record.SmartResponse;
 import com.kaphack.smart_flow_builder.repository.MessageRepository;
 import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -31,6 +31,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
+@Slf4j
 public class OpenAIFlowService implements ISmartFlowService {
 
   private final OpenAiChatModel chatModel;
@@ -78,6 +79,7 @@ public class OpenAIFlowService implements ISmartFlowService {
         .functionCallbacks(FunctionCallbackService.functionCallbackList)
         .build();
     Prompt prompt = new Prompt(messageList, options);
+    log.info("Prompt: {}", prompt);
     String output = chatModel.call(prompt).getResult().getOutput().getContent();
 
     com.kaphack.smart_flow_builder.entity.Message assistantMessage = com.kaphack.smart_flow_builder.entity.Message.builder()

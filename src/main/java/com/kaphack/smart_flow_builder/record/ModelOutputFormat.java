@@ -6,7 +6,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 public record ModelOutputFormat(
 
     @JsonProperty(required = true)
-    @JsonPropertyDescription("status of the output, if user prompt is not clear or any additional information required status will be NEED_DETAILS else DONE if user request is process successfully or OKAY if everything is fine.")
+    @JsonPropertyDescription("""
+        Status of the assistant chat response,
+        NEED_DETAILS: Assistant needs more details from user,
+        DONE: Assistant has completed the conversation,
+        OKAY: Assistant is okay with the conversation.
+        """)
     Status status,
 
     @JsonProperty(required = true)

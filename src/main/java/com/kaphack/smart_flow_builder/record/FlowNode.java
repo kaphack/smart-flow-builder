@@ -39,7 +39,12 @@ public record FlowNode(
       @JsonPropertyDescription("Text message. If variables needs to used in message use like {{variable_name}}")
       String body,
       @JsonProperty(required = true, value = "transition")
-      @JsonPropertyDescription("Represents the edge between two nodes. Each node must have one transition. LIST_MESSAGE_WIDGET and LOGIC_WIDGET can have more than one transitions. END_OF_FLOW_WIDGET should not have any transition. All others should not have more than one transition.")
+      @JsonPropertyDescription("""
+          Represents the transition between two nodes in the flow.
+          - `LIST_MESSAGE_WIDGET` and `LOGIC_WIDGET` can have multiple transitions to support branching logic and user choice handling.
+          - `END_OF_FLOW_WIDGET` should not have any transitions, as it marks the termination of the flow.
+          - All other widget types must have exactly one transition, ensuring a linear progression to the next node.
+          """)
       List<Transition> transition,
       @JsonPropertyDescription("The variable names that will have the values of the user's response for SEND_WAIT_REPLY_MESSAGE_WIDGET and results of other node types.")
       @JsonProperty(required = true, value = "variables")

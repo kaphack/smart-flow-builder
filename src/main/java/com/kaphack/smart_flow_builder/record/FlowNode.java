@@ -28,7 +28,9 @@ public record FlowNode(
         """)
     FlowStepType type,
     @JsonProperty(required = true, value = "data") Data data,
-    @JsonProperty(required = true, value = "position") Position position
+    @JsonProperty(required = true, value = "position")
+    @JsonPropertyDescription("Position of the node in the flow editor. Define position horizontally giving enough space between previous and next nodes.")
+    Position position
 ) {
 
   @JsonClassDescription("Data represents the data for the node. Format to use variables in the property values {{variable_name}}")

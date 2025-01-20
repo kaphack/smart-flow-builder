@@ -47,9 +47,11 @@ public record FlowNode(
       @JsonProperty(value = "message_type", required = true)
       @JsonPropertyDescription("Applicable only for node type LIST_MESSAGE_WIDGET, for other types, it should be set to null.")
       MessageTypeEnum message_type,
-      @JsonProperty(required = true)
-      @JsonPropertyDescription("Applicable only for node type LIST_MESSAGE_WIDGET, for other types, it should be set to null.")
-      List<MessageList> messageList,
+
+//      @JsonProperty(required = true)
+//      @JsonPropertyDescription("Applicable only for node type LIST_MESSAGE_WIDGET, for other types, it should be set to null.")
+//      List<MessageList> messageList,
+
       @JsonProperty(required = true)
       @JsonPropertyDescription("""
            ES5 JavaScript function code. Applicable only for node type CUSTOM_ACTION_WIDGET, for other types, it should be set to null. below is boilerplate code for the function

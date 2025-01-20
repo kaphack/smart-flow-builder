@@ -37,8 +37,7 @@ public class ModelConfiguration {
   @Bean
   public OpenAiChatModel openAiChatModel() {
 //    Message message = messageRepository.findById(1L).orElseThrow();
-    String string = "";
-//    String string = message.getSessionId();
+    String string = System.getenv("OPENAI_API_KEY");
     var openAiApi = new OpenAiApi(string);
     var openAiChatOptions = OpenAiChatOptions.builder()
         .model(OpenAiApi.ChatModel.GPT_4_TURBO)

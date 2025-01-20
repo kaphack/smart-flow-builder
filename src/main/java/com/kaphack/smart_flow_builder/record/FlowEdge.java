@@ -14,7 +14,7 @@ public record FlowEdge(
     @JsonPropertyDescription("The ID of the source node.")
     String source,
     @JsonProperty(required = true)
-    @JsonPropertyDescription("The transition id of the source node.")
+    @JsonPropertyDescription("The transition id of the source node. It will be available in source node's data -> transition item -> id")
     String sourceHandle,
     @JsonProperty(required = true)
     @JsonPropertyDescription("The ID of the target node.")

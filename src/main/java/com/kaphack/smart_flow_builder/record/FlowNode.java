@@ -19,7 +19,7 @@ public record FlowNode(
     @JsonPropertyDescription("""
         Use SEND_MESSAGE_WIDGET to send a text message.
         Use SEND_WAIT_REPLY_MESSAGE_WIDGET to send a message and wait for their reply or asking for inputs.
-        Use LIST_MESSAGE_WIDGET to present the customer with a list of quick reply options. The customer can select one of the provided options to proceed with the flow.
+        Use LIST_MESSAGE_WIDGET for send a message and wait for their reply or asking for inputs by giving set of options, for choices like "Yes" or "No.".
         Use API_REQUEST_WIDGET to make an API call.
         Use CUSTOM_ACTION_WIDGET to write and run custom JavaScript functions when required. The function result will be stored in variable and used in further flow. Mostly will be used after api requests to extract required data.
         Use LOGIC_WIDGET to evaluate conditions such as if, else if, and else for creating conditional flows.

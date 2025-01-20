@@ -8,22 +8,17 @@ public record FlowEdge(
     @JsonPropertyDescription("UUID of the edge.")
     String id,
     @JsonProperty(required = true)
-    @JsonPropertyDescription("Label of the edge, this is the text that will be displayed on the edge. For type LIST_MESSAGE_WIDGET value will be Quick reply option text, for all other value will be 'transition'.")
+    @JsonPropertyDescription("Label of the edge, this is the text that will be displayed on the edge.")
     String label,
     @JsonProperty(required = true)
-    @JsonPropertyDescription("The ID of the source node.")
+    @JsonPropertyDescription("ID of the source node of the edge.")
     String source,
     @JsonProperty(required = true)
-    @JsonPropertyDescription("The transition ID of the source node.")
+    @JsonPropertyDescription("Handle of the source node of the edge.")
     String sourceHandle,
     @JsonProperty(required = true)
-    @JsonPropertyDescription("The ID of the target node.")
+    @JsonPropertyDescription("ID of the target node of the edge.")
     String target,
-    @JsonProperty(defaultValue = "CUSTOM_EDGE", required = true)
-    @JsonPropertyDescription("value will be CUSTOM_EDGE always")
-    String type,
-    @JsonProperty(defaultValue = "true", required = true)
-    @JsonPropertyDescription("value will be true always")
-    boolean animated
+    @JsonProperty(defaultValue = "CUSTOM_EDGE", required = true) @JsonPropertyDescription("value will be CUSTOM_EDGE always") String type
 ) {
 }

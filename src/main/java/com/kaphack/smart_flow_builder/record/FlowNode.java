@@ -24,12 +24,12 @@ public record FlowNode(
         Use CUSTOM_ACTION_WIDGET to write and run custom JavaScript functions when required. The function result will be stored in variable and used in further flow. Mostly will be used after api requests to extract required data.
         Use LOGIC_WIDGET to evaluate conditions such as if, else if, and else for creating conditional flows.
         Use CONNECT_TO_AGENT_WIDGET to connect the user to a live agent.
-        Use END_OF_FLOW_WIDGET to mark the end of the flow.
+        Use END_OF_FLOW_WIDGET to mark the completion of the flow.
         """)
     FlowStepType type,
     @JsonProperty(required = true, value = "data") Data data,
     @JsonProperty(required = true, value = "position")
-    @JsonPropertyDescription("Position of the node in the flow editor. Define this node position below previous node with enough space.")
+    @JsonPropertyDescription("Position of the node in the flow editor. Define position vertically giving enough space between previous and next nodes.")
     Position position
 ) {
 
@@ -52,11 +52,12 @@ public record FlowNode(
       List<MessageList> messageList,
       @JsonProperty(required = true)
       @JsonPropertyDescription("""
-           ES5 JavaScript function code. Applicable only for node type CUSTOM_ACTION_WIDGET, for other types, it should be set to null. below is boilerplate code for the function
-               function customFunction(context) {
-                 context = JSON.parse(context);
+           JavaScript function code. Applicable only for node type CUSTOM_ACTION_WIDGET, for other types, it should be set to null. below is boilerplate code for the function
+               function customFunction(bucket) {
+                 bucket = JSON.parse(bucket);
                  // Your code here
-                 // context is object which contains all the variable's value in the flow
+                 // bucket is object which contains all the variable and value in the flow
+                 // Global variables: bucket.TICKET_ID, bucket.CONTACT.contactPerson, bucket.CUSTOMER.id
                }
           """)
       String javaScriptFunction,
@@ -93,14 +94,10 @@ public record FlowNode(
     ) {
     }
 
-    @JsonClassDescription("User's response of the step will be stored in reply_message property, and the response of the API_REQUEST_WIDGET or CUSTOM_ACTION_WIDGET will be stored in response property.")
     public record Variables(
         @JsonProperty(required = true, value = "reply_message")
         @JsonPropertyDescription("The variable name that will have the value of the user's response.")
-        String reply_message,
-        @JsonProperty(required = true, value = "response")
-        @JsonPropertyDescription("The variable name that will have the value of the API_REQUEST_WIDGET or CUSTOM_ACTION_WIDGET response. For other node types, it should be set to null.")
-        String response
+        String reply_message
     ) {
     }
 
@@ -119,7 +116,6 @@ public record FlowNode(
     }
   }
 
-  @JsonClassDescription("The coordinates of the node on the canvas.")
   public record Position(
       @JsonProperty(required = true) int x,
       @JsonProperty(required = true) int y

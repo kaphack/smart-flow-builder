@@ -24,12 +24,12 @@ public record FlowNode(
         Use CUSTOM_ACTION_WIDGET to write and run custom JavaScript functions when required. The function result will be stored in variable and used in further flow. Mostly will be used after api requests to extract required data.
         Use LOGIC_WIDGET to evaluate conditions such as if, else if, and else for creating conditional flows.
         Use CONNECT_TO_AGENT_WIDGET to connect the user to a live agent.
-        Use END_OF_FLOW_WIDGET to mark the completion of the flow.
+        Use END_OF_FLOW_WIDGET to mark the end of the flow.
         """)
     FlowStepType type,
     @JsonProperty(required = true, value = "data") Data data,
     @JsonProperty(required = true, value = "position")
-    @JsonPropertyDescription("Position of the node in the flow editor. Define position vertically giving extra space between previous and next nodes.")
+    @JsonPropertyDescription("Position of the node in the flow editor. Define position vertically giving extra space between.")
     Position position
 ) {
 
@@ -52,12 +52,11 @@ public record FlowNode(
       List<MessageList> messageList,
       @JsonProperty(required = true)
       @JsonPropertyDescription("""
-           JavaScript function code. Applicable only for node type CUSTOM_ACTION_WIDGET, for other types, it should be set to null. below is boilerplate code for the function
-               function customFunction(bucket) {
-                 bucket = JSON.parse(bucket);
+           ES5 JavaScript function code. Applicable only for node type CUSTOM_ACTION_WIDGET, for other types, it should be set to null. below is boilerplate code for the function
+               function customFunction(context) {
+                 context = JSON.parse(context);
                  // Your code here
-                 // bucket is object which contains all the variable and value in the flow
-                 // Global variables: bucket.TICKET_ID, bucket.CONTACT.contactPerson, bucket.CUSTOMER.id
+                 // context is object which contains all the variable's value in the flow
                }
           """)
       String javaScriptFunction,
@@ -95,9 +94,9 @@ public record FlowNode(
     }
 
     public record Variables(
-        @JsonProperty(required = true, value = "reply_message")
-        @JsonPropertyDescription("The variable name that will have the value of the user's response.")
-        String reply_message
+        @JsonProperty(required = true)
+        @JsonPropertyDescription("This step's result will be stored in this variable name, user's reply message or API responses or javascript results are stored in this name.")
+        String variableName
     ) {
     }
 

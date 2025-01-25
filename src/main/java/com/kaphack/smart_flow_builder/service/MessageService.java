@@ -33,17 +33,19 @@ public class MessageService {
   public List<org.springframework.ai.chat.messages.Message> getPastConversation(String sessionId) {
     List<org.springframework.ai.chat.messages.Message> conversation = new ArrayList<>();
     List<com.kaphack.smart_flow_builder.entity.Message> messages = messageRepository.findBySessionId(sessionId);
-    for (com.kaphack.smart_flow_builder.entity.Message message : messages) {
-      if (message.getRole() == MessageType.SYSTEM) {
-        conversation.add(new SystemMessage(message.getMessage()));
-      } else if (message.getRole() == MessageType.USER) {
-        conversation.add(new UserMessage(message.getMessage()));
-      } else if (message.getRole() == MessageType.ASSISTANT) {
-        conversation.add(new AssistantMessage(message.getMessage()));
-      } else if (message.getRole() == MessageType.TOOL) {
-        conversation.add(new AssistantMessage(message.getMessage()));
-      }
-    }
+    messages.parallelStream().forEach(
+        message -> {
+          if (message.getRole() == MessageType.SYSTEM) {
+            conversation.add(new SystemMessage(message.getMessage()));
+          } else if (message.getRole() == MessageType.USER) {
+            conversation.add(new UserMessage(message.getMessage()));
+          } else if (message.getRole() == MessageType.ASSISTANT) {
+            conversation.add(new AssistantMessage(message.getMessage()));
+          } else if (message.getRole() == MessageType.TOOL) {
+            conversation.add(new AssistantMessage(message.getMessage()));
+          }
+        }
+    );
     return conversation;
   }
 

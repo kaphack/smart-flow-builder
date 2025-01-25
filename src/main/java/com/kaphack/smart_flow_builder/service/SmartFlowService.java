@@ -25,6 +25,10 @@ public class SmartFlowService implements ISmartFlowService {
 
   private final MessageService messageService;
 
+  // todo ratelimit by sessionId
+  // todo stop prompt request
+  // todo edit prompt message
+
   public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) {
     log.info("Request received for getSmartFlow: {}", reqDto);
     try {
@@ -32,8 +36,7 @@ public class SmartFlowService implements ISmartFlowService {
       if (service == null) {
         return ResponseEntity.badRequest().body("Model not found");
       }
-      return StaticContextAccessor.getBean(service)
-          .getSmartFlow(reqDto);
+      return StaticContextAccessor.getBean(service).getSmartFlow(reqDto);
     } catch (Exception e) {
       log.error("Error in getSmartFlow", e);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

@@ -10,4 +10,8 @@ public class SmartFlowBuilderApplication {
 		SpringApplication.run(SmartFlowBuilderApplication.class, args);
 	}
 
+	//todo:
+	// sessionId based on flowId
+	// function calling for get full flow json
+
 }

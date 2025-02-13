@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Deprecated
 public class OllamaChatMessageDto {
   private String role;
   private String content;

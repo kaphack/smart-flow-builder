@@ -11,6 +11,7 @@ import java.util.List;
 
 @Builder
 @Data
+@Deprecated
 public class OllamaChatRequestDto {
   private String                           model  = GeneralConstants.MODEL_NAME;
   private List<OllamaChatMessageDto>       messages;

@@ -1,6 +1,5 @@
 package com.kaphack.smart_flow_builder.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 public enum FlowStepType {

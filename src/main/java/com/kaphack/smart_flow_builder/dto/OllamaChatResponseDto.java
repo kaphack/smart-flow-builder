@@ -3,6 +3,7 @@ package com.kaphack.smart_flow_builder.dto;
 import lombok.Data;
 
 @Data
+@Deprecated
 public class OllamaChatResponseDto {
   private String               model;
   private Object               created_at;

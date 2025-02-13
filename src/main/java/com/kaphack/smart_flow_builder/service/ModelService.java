@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 @Service
 @Slf4j
+@Deprecated
 public class ModelService {
 
 

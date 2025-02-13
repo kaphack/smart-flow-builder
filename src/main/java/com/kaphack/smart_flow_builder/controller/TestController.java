@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
+@Deprecated
 public class TestController {
 
   private final OllamaChatModel chatModel;

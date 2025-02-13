@@ -3,7 +3,7 @@ package com.kaphack.smart_flow_builder.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
-import com.kaphack.smart_flow_builder.record.SmartResponse;
+import com.kaphack.smart_flow_builder.dto.SmartResponse;
 import com.kaphack.smart_flow_builder.repository.MessageRepository;
 import com.kaphack.smart_flow_builder.util.StringUtils;
 import lombok.RequiredArgsConstructor;

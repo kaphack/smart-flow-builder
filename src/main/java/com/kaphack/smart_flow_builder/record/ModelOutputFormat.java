@@ -8,9 +8,9 @@ public record ModelOutputFormat(
     @JsonProperty(required = true)
     @JsonPropertyDescription("""
         Status of the assistant chat response,
-        NEED_DETAILS: Assistant needs more details from user,
-        DONE: Assistant has completed the conversation,
-        OKAY: Assistant is okay with the conversation.
+        NeedDetails: Assistant needs more details from user,
+        Done: Assistant has generated a flow json,
+        Okay: Assistant is okay with the conversation.
         """)
     Status status,
 
@@ -18,14 +18,14 @@ public record ModelOutputFormat(
     FlowJson flowJson,
 
     @JsonProperty(required = true)
-    @JsonPropertyDescription("If status is NEED_DETAILS, this field contains a question to user asking for additional details.")
-    String neededDetails
+    @JsonPropertyDescription("If status is NeedDetails, this field contains a question to user asking for additional details.")
+    String questionToUser
 
 ) {
 
   enum Status {
-    NEED_DETAILS,
-    DONE,
-    OKAY
+    NeedDetails,
+    Done,
+    Okay,
   }
 }

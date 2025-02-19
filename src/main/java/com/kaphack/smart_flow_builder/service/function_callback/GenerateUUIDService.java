@@ -10,11 +10,11 @@ public class GenerateUUIDService implements Function<GenerateUUIDService.Request
 
   @Override
   public Response apply(Request request) {
-    log.info("GenerateUUIDService {}", request);
+    log.info("Function call: GenerateUUIDService {}", request);
     return new Response(java.util.UUID.randomUUID().toString());
   }
 
-  public record Request(String type) {
+  public record Request(String parameterKey) {
   }
 
   public record Response(

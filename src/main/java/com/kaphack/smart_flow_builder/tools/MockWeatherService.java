@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 /**
  * @author Geng Rong
  */
+@Deprecated
 public class MockWeatherService implements Function<MockWeatherService.Request, MockWeatherService.Response> {
 
   @Override

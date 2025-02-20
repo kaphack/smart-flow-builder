@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Function;
 
+@Deprecated
 public class NodeType implements Function<NodeType.Request, NodeType.Response> {
 
   @Override

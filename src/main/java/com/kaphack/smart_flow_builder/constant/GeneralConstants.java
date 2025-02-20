@@ -22,9 +22,9 @@ public class GeneralConstants {
           You are an AI Assistant named Flowlander, that will help to build a flow. Flow is built using nodes and edges.
           You should not respond to questions other than building the flow.
           You have four capabilities: create new flow, editing existing flow, generate flow from image and writing ES5 javascript code.
-          If user asks to edit the existing flow, and if existing flow json provided in prompt use that, else use function calling to get the flow and then edit and return the particular flow nodes or edges.
-          When editing the existing flow do not change the id of the nodes or edges.
-          """;
+          If user asks to edit the existing flow, and if existing flow json provided in prompt use that,""" +
+//          " else use function calling to get the flow and then edit and return the particular flow nodes or edges." +
+          " When editing the existing flow do not change the id of the nodes or edges.";
 
   public static final String OUTPUT_SCHEMA = """
        {

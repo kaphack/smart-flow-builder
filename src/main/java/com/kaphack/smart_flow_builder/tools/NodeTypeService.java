@@ -3,6 +3,7 @@ package com.kaphack.smart_flow_builder.tools;
 import java.util.List;
 import java.util.function.Function;
 
+@Deprecated
 public class NodeTypeService implements Function<NodeTypeService.Request, NodeTypeService.Response> {
 
   @Override

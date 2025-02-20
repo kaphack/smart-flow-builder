@@ -19,13 +19,13 @@ public class FunctionCallbackService {
             .inputType(GenerateUUIDService.Request.class)
             .build()
     );
-    functionCallbackList.add(
-        FunctionCallback.builder()
-            .function("GetExistingFlow", new GetExistingFlowService())
-            .description("Use this to get existing flow")
-            .inputType(GetExistingFlowService.Request.class)
-            .build()
-    );
+//    functionCallbackList.add(
+//        FunctionCallback.builder()
+//            .function("GetExistingFlow", new GetExistingFlowService())
+//            .description("Use this to get existing flow")
+//            .inputType(GetExistingFlowService.Request.class)
+//            .build()
+//    );
   }
 
 }

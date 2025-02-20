@@ -1,4 +1,4 @@
-package com.kaphack.smart_flow_builder.service.function_callback;
+package com.kaphack.smart_flow_builder.tools;
 
 import java.util.List;
 import java.util.function.Function;

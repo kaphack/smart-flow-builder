@@ -1,7 +1,7 @@
 package com.kaphack.smart_flow_builder.service;
 
-import com.kaphack.smart_flow_builder.service.function_callback.GenerateUUIDService;
-import com.kaphack.smart_flow_builder.service.function_callback.GetExistingFlowService;
+import com.kaphack.smart_flow_builder.tools.GenerateUUIDService;
+import com.kaphack.smart_flow_builder.tools.GetExistingFlowService;
 import org.springframework.ai.model.function.FunctionCallback;
 
 import java.util.ArrayList;

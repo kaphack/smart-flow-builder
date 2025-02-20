@@ -34,7 +34,7 @@ import java.util.List;
 @Slf4j
 public class OpenAIFlowService implements ISmartFlowService {
 
-    private final OpenAiChatModel   chatModel;
+        private final OpenAiChatModel   chatModel;
     private final MessageRepository messageRepository;
     private final MessageService    messageService;
 

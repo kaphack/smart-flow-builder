@@ -1,4 +1,4 @@
-package com.kaphack.smart_flow_builder.service.function_callback;
+package com.kaphack.smart_flow_builder.tools;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;

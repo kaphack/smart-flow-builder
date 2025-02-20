@@ -15,7 +15,7 @@ public class FunctionCallbackService {
     functionCallbackList.add(
         FunctionCallback.builder()
             .function("GenerateUUID", new GenerateUUIDService())
-            .description("Use this in creating new flow to generate id, transition id for node and edge in flowJson")
+            .description("Use this in creating new flow to generate id, transition id for node and edge in flowJson, Dont use this when editing existing flow.")
             .inputType(GenerateUUIDService.Request.class)
             .build()
     );

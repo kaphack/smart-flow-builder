@@ -11,14 +11,26 @@ public class GenerateUUIDService implements Function<GenerateUUIDService.Request
   @Override
   public Response apply(Request request) {
     log.info("Function call: GenerateUUIDService {}", request);
-    return new Response(java.util.UUID.randomUUID().toString());
+    String uuid = java.util.UUID.randomUUID().toString();
+    if (request.type == UUIDType.nodeId) {
+      uuid = "dndnode_".concat(uuid);
+    }
+    return new Response(uuid);
   }
 
-  public record Request(String parameterKey) {
+  public record Request(UUIDType type) {
   }
 
   public record Response(
-      @JsonProperty(value = "uuid")
-      String uuid) {
+      @JsonProperty(value = "uuid") String uuid
+  ) {
   }
+
+  enum UUIDType {
+    nodeId,
+    edgeId,
+    transitionId,
+    somethingElse
+  }
+
 }

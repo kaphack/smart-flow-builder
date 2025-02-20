@@ -59,12 +59,20 @@ public record FlowNode(
 
       @JsonProperty(required = true)
       @JsonPropertyDescription("""
-           ES5 JavaScript function code. Applicable only for node type CUSTOM_ACTION_WIDGET, for other types, it should be set to null. below is boilerplate code for the function
-               function customFunction(variables) {
-                 variables = JSON.parse(variables);
-                 // Your code here
-                 // variables is object which contains all the variable's value in the flow
-               }
+              ES5 JavaScript function code for CUSTOM_ACTION_WIDGET nodes.
+              Set to null for other node types.
+
+              Boilerplate:
+
+              function customFunction(variables) {
+                  variables = JSON.parse(variables);
+                  // Your code here
+                  // 'variables' contains all flow variable values
+              }
+
+              Notes:
+              - Use ES5 syntax only.
+              - 'variables' is a JSON string; parse before use.
           """)
       String javaScriptFunction,
 

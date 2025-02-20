@@ -28,4 +28,11 @@ public record ModelOutputFormat(
     Done,
     Okay,
   }
+
+//  enum StatusDescription {
+//    RequestedFlowIsGenerated,
+//    RequestedEditFlowIsDone,
+//    RequestedJavascriptIsGenerated,
+//    QueryIsNotRelatedToBuildingFlow,
+//  }
 }

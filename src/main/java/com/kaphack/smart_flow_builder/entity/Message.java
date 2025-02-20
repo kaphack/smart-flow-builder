@@ -32,6 +32,9 @@ public class Message {
   @Column(name = "message", nullable = false, columnDefinition = "TEXT")
   private String message;
 
+  @Column(name = "inputFlowJson", columnDefinition = "TEXT")
+  private String inputFlowJson;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "role", nullable = false)
   private MessageType role;

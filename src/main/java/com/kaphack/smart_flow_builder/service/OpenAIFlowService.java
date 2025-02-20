@@ -34,72 +34,73 @@ import java.util.List;
 @Slf4j
 public class OpenAIFlowService implements ISmartFlowService {
 
-        private final OpenAiChatModel   chatModel;
-    private final MessageRepository messageRepository;
-    private final MessageService    messageService;
+  private final OpenAiChatModel   chatModel;
+  private final MessageRepository messageRepository;
+  private final MessageService    messageService;
 
-    public List<Message> getCoversationList(SmartFlowRequestDto reqDto) {
-        List<Message> messageList = new ArrayList<>();
-        if (reqDto.isNewSession()) {
-            var message = com.kaphack.smart_flow_builder.entity.Message.builder()
-                    .sessionId(reqDto.getSessionId())
-                    .message(GeneralConstants.SYSTEM_TO_ASSISTANT_MESSAGE + "Flow Id for this session: " + reqDto.getFlowId())
-                    .role(MessageType.SYSTEM)
-                    .build();
-            messageRepository.save(message);
-            messageList.add(new SystemMessage(message.getMessage()));
-            message = com.kaphack.smart_flow_builder.entity.Message.builder()
-                    .sessionId(reqDto.getSessionId())
-                    .message("Well, what do you need built?")
-                    .role(MessageType.ASSISTANT)
-                    .build();
-            messageRepository.save(message);
-            messageList.add(new AssistantMessage(message.getMessage()));
-        } else {
-            messageList = messageService.getPastConversation(reqDto.getSessionId());
-        }
-        return messageList;
+  public List<Message> getCoversationList(SmartFlowRequestDto reqDto) {
+    List<Message> messageList = new ArrayList<>();
+    if (reqDto.isNewSession()) {
+      var message = com.kaphack.smart_flow_builder.entity.Message.builder()
+          .sessionId(reqDto.getSessionId())
+          .message(GeneralConstants.SYSTEM_TO_ASSISTANT_MESSAGE + "Flow Id for this session: " + reqDto.getFlowId())
+          .role(MessageType.SYSTEM)
+          .build();
+      messageRepository.save(message);
+      messageList.add(new SystemMessage(message.getMessage()));
+      message = com.kaphack.smart_flow_builder.entity.Message.builder()
+          .sessionId(reqDto.getSessionId())
+          .message("Well, what do you need built?")
+          .role(MessageType.ASSISTANT)
+          .build();
+      messageRepository.save(message);
+      messageList.add(new AssistantMessage(message.getMessage()));
+    } else {
+      messageList = messageService.getPastConversation(reqDto.getSessionId());
     }
+    return messageList;
+  }
 
-    public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws Exception {
-        String sessionId = reqDto.getSessionId();
-        List<Message> messageList = getCoversationList(reqDto);
-        messageRepository.save(
-                com.kaphack.smart_flow_builder.entity.Message.builder()
-                        .sessionId(sessionId)
-                        .message(reqDto.getPromptText())
-                        .role(MessageType.USER)
-                        .build()
-        );
+  public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws Exception {
+    String sessionId = reqDto.getSessionId();
+    List<Message> messageList = getCoversationList(reqDto);
+    messageRepository.save(
+        com.kaphack.smart_flow_builder.entity.Message.builder()
+            .sessionId(sessionId)
+            .message(reqDto.getPromptText())
+            .inputFlowJson(reqDto.getInputFlowJson())
+            .role(MessageType.USER)
+            .build()
+    );
 
-        if (StringUtils.isNotNullOrEmpty(reqDto.getInputFlowJson())) {
-            reqDto.setPromptText(reqDto.getPromptText() + "\n\n" + reqDto.getInputFlowJson());
-        }
-        if (StringUtils.isNotNullOrEmpty(reqDto.getPromptImage())) {
-            var useMessage = new UserMessage(reqDto.getPromptText(), new Media(MimeTypeUtils.IMAGE_PNG, new URL(reqDto.getPromptImage())));
-            messageList.add(useMessage);
-        } else {
-            var useMessage = new UserMessage(reqDto.getPromptText());
-            messageList.add(useMessage);
-        }
-        var beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
-        OpenAiChatOptions options = OpenAiChatOptions.builder()
-                .temperature(1.0)
-                .model(OpenAiApi.ChatModel.GPT_4_O_MINI)
-                .responseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, beanOutputConverter.getJsonSchema()))
-                .functionCallbacks(FunctionCallbackService.functionCallbackList)
-                .build();
-        Prompt prompt = new Prompt(messageList, options);
-        log.info("Prompt: {}", prompt);
-        String output = chatModel.call(prompt).getResult().getOutput().getContent();
-
-        com.kaphack.smart_flow_builder.entity.Message assistantMessage = com.kaphack.smart_flow_builder.entity.Message.builder()
-                .sessionId(sessionId)
-                .message(output)
-                .role(MessageType.ASSISTANT)
-                .build();
-        messageRepository.save(assistantMessage);
-        return ResponseEntity.ok(new SmartResponse(sessionId, assistantMessage));
+    if (StringUtils.isNotNullOrEmpty(reqDto.getInputFlowJson())) {
+      reqDto.setPromptText(reqDto.getPromptText() + "\n\n" + reqDto.getInputFlowJson());
     }
+    if (StringUtils.isNotNullOrEmpty(reqDto.getPromptImage())) {
+      var useMessage = new UserMessage(reqDto.getPromptText(), new Media(MimeTypeUtils.IMAGE_PNG, new URL(reqDto.getPromptImage())));
+      messageList.add(useMessage);
+    } else {
+      var useMessage = new UserMessage(reqDto.getPromptText());
+      messageList.add(useMessage);
+    }
+    var beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
+    OpenAiChatOptions options = OpenAiChatOptions.builder()
+        .temperature(1.0)
+        .model(OpenAiApi.ChatModel.GPT_4_O_MINI)
+        .responseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, beanOutputConverter.getJsonSchema()))
+        .functionCallbacks(FunctionCallbackService.functionCallbackList)
+        .build();
+    Prompt prompt = new Prompt(messageList, options);
+    log.info("Prompt: {}", prompt);
+    String output = chatModel.call(prompt).getResult().getOutput().getContent();
+
+    com.kaphack.smart_flow_builder.entity.Message assistantMessage = com.kaphack.smart_flow_builder.entity.Message.builder()
+        .sessionId(sessionId)
+        .message(output)
+        .role(MessageType.ASSISTANT)
+        .build();
+    messageRepository.save(assistantMessage);
+    return ResponseEntity.ok(new SmartResponse(sessionId, assistantMessage));
+  }
 
 }

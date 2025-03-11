@@ -19,8 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 public class SmartFlowUtils {
 
-  private MessageRepository messageRepository;
-  private MessageService    messageService;
+  private final MessageRepository messageRepository;
+  private final MessageService    messageService;
 
   public List<Message> getCoversationList(SmartFlowRequestDto reqDto) {
     List<Message> messageList = new ArrayList<>();

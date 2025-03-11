@@ -27,7 +27,9 @@ public class SmartFlowUtils {
     if (reqDto.isNewSession()) {
       var message = com.kaphack.smart_flow_builder.entity.Message.builder()
           .sessionId(reqDto.getSessionId())
-          .message(GeneralConstants.SYSTEM_TO_ASSISTANT_MESSAGE + "Flow Id for this session: " + reqDto.getFlowId())
+          .message(GeneralConstants.SYSTEM_TO_ASSISTANT_MESSAGE
+//              + "Flow Id for this session: " + reqDto.getFlowId()
+          )
           .role(MessageType.SYSTEM)
           .build();
       messageRepository.save(message);

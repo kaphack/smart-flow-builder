@@ -32,7 +32,7 @@ public class OllamaFlowService implements ISmartFlowService {
   private final MediaInputUtils   mediaInputUtils;
   private final SmartFlowUtils    smartFlowUtils;
 
-  public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws Exception {
+  public ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) {
     String sessionId = reqDto.getSessionId();
     List<Message> messageList = smartFlowUtils.getCoversationList(reqDto);
     messageRepository.save(
@@ -69,7 +69,7 @@ public class OllamaFlowService implements ISmartFlowService {
     reqDto.setPromptText(reqDto.getPromptText() + "\n\n" + reqDto.getInputFlowJson());
     var beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
     OllamaOptions options = OllamaOptions.builder()
-        .temperature(1.0)
+        .temperature(0.3)
         .model(reqDto.getModel())
         .format(beanOutputConverter.getJsonSchemaMap())
         .functionCallbacks(FunctionCallbackService.functionCallbackList)

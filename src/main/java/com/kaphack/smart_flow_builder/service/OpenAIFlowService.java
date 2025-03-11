@@ -2,6 +2,7 @@ package com.kaphack.smart_flow_builder.service;
 
 import com.kaphack.smart_flow_builder.dto.SmartFlowRequestDto;
 import com.kaphack.smart_flow_builder.dto.SmartResponse;
+import com.kaphack.smart_flow_builder.record.JavascriptOutputFormat;
 import com.kaphack.smart_flow_builder.record.ModelOutputFormat;
 import com.kaphack.smart_flow_builder.repository.MessageRepository;
 import com.kaphack.smart_flow_builder.util.SmartFlowUtils;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
+import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.converter.BeanOutputConverter;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,13 +63,13 @@ public class OpenAIFlowService implements ISmartFlowService {
     }
     var beanOutputConverter = new BeanOutputConverter<>(ModelOutputFormat.class);
     OpenAiChatOptions options = OpenAiChatOptions.builder()
-        .temperature(1.0)
+        .temperature(0.3)
         .model(OpenAiApi.ChatModel.GPT_4_O_MINI)
         .responseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, beanOutputConverter.getJsonSchema()))
         .functionCallbacks(FunctionCallbackService.functionCallbackList)
         .build();
     Prompt prompt = new Prompt(messageList, options);
-    log.info("Prompt: {}", prompt);
+    log.info("Flow Prompt: {}", prompt);
     String output = chatModel.call(prompt).getResult().getOutput().getContent();
 
     com.kaphack.smart_flow_builder.entity.Message assistantMessage = com.kaphack.smart_flow_builder.entity.Message.builder()
@@ -80,7 +83,18 @@ public class OpenAIFlowService implements ISmartFlowService {
 
   @Override
   public ResponseEntity<?> generateJavascript(SmartFlowRequestDto reqDto) {
-    return null;
+    List<Message> messageList = new ArrayList<>();
+    messageList.add(new SystemMessage(""));
+    messageList.add(new UserMessage(reqDto.getPromptText()));
+    OpenAiChatOptions options = OpenAiChatOptions.builder()
+        .temperature(0.3)
+        .model(OpenAiApi.ChatModel.GPT_4_O_MINI)
+        .responseFormat(new ResponseFormat(ResponseFormat.Type.JSON_SCHEMA, new BeanOutputConverter<>(JavascriptOutputFormat.class).getJsonSchema()))
+        .build();
+    Prompt prompt = new Prompt(messageList, options);
+    log.info("Javascript Prompt: {}", prompt);
+    String output = chatModel.call(prompt).getResult().getOutput().getContent();
+    return ResponseEntity.ok(output);
   }
 
 }

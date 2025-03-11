@@ -51,4 +51,9 @@ public class SmartFlowController {
     return smartFlowService.getSmartFlow(reqDto);
   }
 
+  @PostMapping("/generate-javascript")
+  public ResponseEntity<?> generateJavascript(@Validated @RequestBody SmartFlowRequestDto reqDto) {
+    return smartFlowService.generateJavascript(reqDto);
+  }
+
 }

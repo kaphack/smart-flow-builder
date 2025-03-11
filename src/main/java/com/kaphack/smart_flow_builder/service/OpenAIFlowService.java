@@ -86,7 +86,7 @@ public class OpenAIFlowService implements ISmartFlowService {
     List<Message> messageList = new ArrayList<>();
     messageList.add(new SystemMessage("""
         You are a JavaScript code generator specialized in producing ES5-compliant functions.
-        Your goal is to generate a function that processes a JSON string containing flow variables and returns a respective output as per user requirement.
+        Your goal is to generate a function that processes a JSON string containing flow variables and returns a respective output as per user message.
 
             Instructions:
             - The function name should always be `customFunction`.

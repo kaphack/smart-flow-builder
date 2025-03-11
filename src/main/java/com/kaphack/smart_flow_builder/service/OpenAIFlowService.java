@@ -84,7 +84,17 @@ public class OpenAIFlowService implements ISmartFlowService {
   @Override
   public ResponseEntity<?> generateJavascript(SmartFlowRequestDto reqDto) {
     List<Message> messageList = new ArrayList<>();
-    messageList.add(new SystemMessage(""));
+    messageList.add(new SystemMessage("""
+        You are a JavaScript code generator specialized in producing ES5-compliant functions.
+        Your goal is to generate a function that processes a JSON string containing flow variables and returns a respective output as per user requirement.
+
+            Instructions:
+            - The function name should always be `customFunction`.
+            - The function must accept a single parameter: `variables` (a JSON string).
+            - Parse `variables` before using it.
+            - Use only ES5 syntax.
+            - Avoid using external libraries.
+        """));
     messageList.add(new UserMessage(reqDto.getPromptText()));
     OpenAiChatOptions options = OpenAiChatOptions.builder()
         .temperature(0.3)

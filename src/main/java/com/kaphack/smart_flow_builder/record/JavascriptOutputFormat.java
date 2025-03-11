@@ -6,18 +6,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 public record JavascriptOutputFormat(
 
     @JsonProperty(required = true)
-    @JsonPropertyDescription("""
-            Boilerplate:
+    @JsonPropertyDescription(""" 
+        Expected JavaScript function format:
 
-            function customFunction(variables) {
-                variables = JSON.parse(variables);
-                // Your code here
-                // 'variables' contains all flow variable values
-            }
-
-            Notes:
-            - Use ES5 syntax only.
-            - 'variables' is a JSON string; parse before use.
+        function customFunction(variables) {
+            variables = JSON.parse(variables);
+            // Your logic here
+        }
         """)
     String javascriptFunction
 

@@ -7,4 +7,5 @@ public interface ISmartFlowService {
 
   ResponseEntity<?> getSmartFlow(SmartFlowRequestDto reqDto) throws Exception;
 
+  ResponseEntity<?> generateJavascript(SmartFlowRequestDto reqDto);
 }

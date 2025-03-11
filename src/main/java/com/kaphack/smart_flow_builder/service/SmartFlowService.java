@@ -43,6 +43,15 @@ public class SmartFlowService implements ISmartFlowService {
     }
   }
 
+  @Override
+  public ResponseEntity<?> generateJavascript(SmartFlowRequestDto reqDto) {
+    var service = StringUtils.isNullOrEmpty(reqDto.getModel()) ? OpenAIFlowService.class : GeneralConstants.AVAILABLE_MODELS.get(reqDto.getModel());
+    if (service == null) {
+      return ResponseEntity.badRequest().body("Model not found");
+    }
+    return StaticContextAccessor.getBean(service).generateJavascript(reqDto);
+  }
+
 //  private List<OllamaApi.ChatRequest.Tool> getFunctionDefinition() {
 //    return FunctionCallbackService.functionCallbackList.stream().map((functionCallback) -> {
 //      OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(functionCallback.getName(), functionCallback.getDescription(), functionCallback.getInputTypeSchema());

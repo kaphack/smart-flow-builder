@@ -6,6 +6,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 public record JavascriptOutputFormat(
 
     @JsonProperty(required = true)
+    @JsonPropertyDescription("""
+        Status of the response. If the user's prompt is not clear, status should be error and dont generate javascriptFunction.
+        """)
+    Status status,
+
+    @JsonProperty(required = true)
     @JsonPropertyDescription(""" 
         Expected JavaScript function format:
 
@@ -17,4 +23,10 @@ public record JavascriptOutputFormat(
     String javascriptFunction
 
 ) {
+
+  enum Status {
+    success,
+    error
+  }
+
 }

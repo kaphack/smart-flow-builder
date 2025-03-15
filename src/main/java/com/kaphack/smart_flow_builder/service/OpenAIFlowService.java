@@ -94,6 +94,7 @@ public class OpenAIFlowService implements ISmartFlowService {
             - Parse `variables` before using it.
             - Use only ES5 syntax.
             - Avoid using external libraries.
+            - Use available variables when necessary.
         """));
     messageList.add(new UserMessage(reqDto.getPromptText()));
     OpenAiChatOptions options = OpenAiChatOptions.builder()

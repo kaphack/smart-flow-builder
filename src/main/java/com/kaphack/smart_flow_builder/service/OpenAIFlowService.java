@@ -105,6 +105,7 @@ public class OpenAIFlowService implements ISmartFlowService {
     Prompt prompt = new Prompt(messageList, options);
     log.info("Javascript Prompt: {}", prompt);
     String output = chatModel.call(prompt).getResult().getOutput().getContent();
+    log.info("Javascript Output: {}", output);
     return ResponseEntity.ok(output);
   }
 
